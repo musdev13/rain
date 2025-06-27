@@ -18,6 +18,10 @@ MediaList::MediaList(const std::vector<std::string>& inputItems, mpv_handle* mpv
         mpv_command(mpv, cmd);
         current = selected;
         manual_change = true;
+        std::thread([](){
+            std::this_thread::sleep_for(std::chrono::milliseconds(300));
+            manual_change = false;
+        }).detach();
     };
     menu = Menu(&items,&selected, opt);
 

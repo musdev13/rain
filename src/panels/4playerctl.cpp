@@ -4,7 +4,7 @@ playerCtl::playerCtl(mpv_handle* mpvv, ScreenInteractive& screenr) {
     mpv = mpvv;
     screen = &screenr;
     title = "Nothing";
-    pp = Button("||", []{}, btnStyle());
+    pp = Button("", []{}, btnStyle());
 
     updateThread = std::thread([this]() {
         std::string last_title;

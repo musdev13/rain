@@ -4,7 +4,7 @@ LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv
 
 SRC_DIRS := src src/panels src/buttonOptions
 BUILD_DIR := build
-TARGET := $(BUILD_DIR)/main
+TARGET := $(BUILD_DIR)/mtui
 
 SRC := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 

@@ -4,6 +4,7 @@
 int main(int argc, char* argv[]){
     std::vector<std::string> files = getFilesInDirectory(argv[1]);
     mpv_handle* mpv = mpv_create();
+    // mpv_request_log_messages(mpv, "v");
     // mpv_set_option_string(mpv, "no-video", "yes");
     // mpv_set_option_string(mpv, "terminal", "yes");
     mpv_set_option_string(mpv, "vo", "null");
@@ -68,6 +69,10 @@ int main(int argc, char* argv[]){
         if (event == Event::CtrlQ) {
             screen.Exit();
             exit(0);
+        }
+        if (event == Event::CtrlS){
+            panels[4]->getLayout()->ChildAt(0)->TakeFocus();
+            return true;
         }
         return false;
     });

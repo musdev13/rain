@@ -1,6 +1,7 @@
 #pragma once
 #include "panelBase.hpp"
 #include <fstream>
+#include <thread>
 #include "../event_loop.hpp"
 
 class MediaList : public panelBase {
