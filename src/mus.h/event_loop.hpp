@@ -2,7 +2,7 @@
 #include <vector>
 #include <mpv/client.h>
 #include <iostream>
-#include <fstream>>
+#include <fstream>
 #include "atomic_vars.hpp"
 
 
