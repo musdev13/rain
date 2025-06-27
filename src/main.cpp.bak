@@ -1,0 +1,198 @@
+// #include "PythonEmbed.hpp"
+#include <iostream>
+#include <vector>
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+using namespace ftxui;
+
+ButtonOption btnStyle(){
+    auto option = ButtonOption::Animated();
+    option.transform = [](const EntryState& s){
+        auto element = text(s.label) | center | bold;
+        element = hbox({text(" "),element,text("  ")});
+        if (s.focused)
+            element = element | color(Color::Black) | bgcolor(Color::White);
+        return element;
+    };
+    return option;
+};
+
+class Menuctl{
+private:
+    int id;
+public:
+    Menuctl(){id =3;}
+    int getID() const {
+        return id;
+    }
+    void setID(int id){
+        this->id = id;
+    }
+};
+
+class panelBase {
+protected:
+    ftxui::Component layout;
+
+public:
+    virtual ~panelBase() = default;
+
+    virtual ftxui::Element getElement() = 0;
+
+    ftxui::Component getLayout() {
+        return layout;
+    }
+};
+
+class Blank : public panelBase {
+private: 
+    Element text;
+public:
+    Blank(){text = ftxui::text("");layout=Container::Horizontal({});}
+    ftxui::Element getElement() override{
+        return vbox({
+            text,
+        });
+    }
+};
+
+class Header : public panelBase {
+private:
+    ftxui::Component button1;
+    ftxui::Component button2;
+    ftxui::Component input;
+    Component inputBlocked;
+    std::string inputContent;
+    int prevMenuID;
+public:
+    Header(Menuctl* menuctl, ScreenInteractive* screen) {
+        prevMenuID = 2;
+        button1 = Button("", [menuctl, screen, this] {
+            int id = menuctl->getID();
+            if (id == 1){
+                menuctl->setID(prevMenuID);
+            }
+            else{
+                prevMenuID = id;
+                menuctl->setID(1);
+            }
+            screen->PostEvent(Event::Custom);
+        }, btnStyle());
+        button2 = Button("", [] {}, btnStyle());
+        ftxui::InputOption options;
+        options.placeholder = "Search...";
+        options.on_enter = [&]{
+        };
+        input = Input(&inputContent, options);
+
+        inputBlocked = CatchEvent(input, [](Event event) {
+            if (event == Event::Return)
+                return true;
+            return false;
+        });
+
+        layout = Container::Horizontal({
+            button1,
+            inputBlocked,
+            button2,
+        });
+    }
+
+    ftxui::Element getElement() override {
+        return hbox({
+            button1->Render(),
+            input->Render(),
+            button2->Render(),
+        });
+    }
+    
+    // Component getInput(){
+    //     return input;
+    // }
+};
+
+class Settings : public panelBase {
+private:
+    ftxui::Component button;
+
+public:
+    Settings() {
+        button = Button("Some Button", [] {}, btnStyle());
+        layout = Container::Horizontal({ button });
+    }
+
+    ftxui::Element getElement() override {
+        return hbox({
+            button->Render(),
+        });
+    }
+};
+
+class MediaList : public panelBase {
+private:
+    ftxui::Component menu;
+    std::vector<std::string> items;
+    int selected;
+public:
+    MediaList(){
+        items = {"1","2","3","4","5","6","7","8","9","10"};
+        selected = 0;
+        menu = Menu(&items,&selected);
+
+        layout = Container::Horizontal({menu});
+    }
+
+    ftxui::Element getElement() override {
+        return hbox({
+            menu->Render()
+        });
+    }
+};
+
+
+int main(){
+    /*PythonEmbed py;
+    if (!py.loadModule("test")){
+        return 1;
+    }
+    std::string pyText = py.callFunc("randomNumOpt",{PythonEmbed::toPyInt(1), PythonEmbed::toPyInt(10)});
+    */
+    Menuctl menuctl;
+    auto screen = ScreenInteractive::TerminalOutput();
+    std::vector<std::unique_ptr<panelBase>> panels;
+    panels.push_back(std::make_unique<Header>(&menuctl,&screen));
+    panels.push_back(std::make_unique<Settings>());
+    panels.push_back(std::make_unique<Blank>());
+    panels.push_back(std::make_unique<MediaList>());
+
+    auto layout = Container::Vertical({});
+    
+
+
+    auto renderer = Renderer(layout, [&]{
+        layout->DetachAllChildren();
+        layout->Add(panels[0]->getLayout());
+
+        int id = menuctl.getID();
+        if (id < 0 || id >= panels.size()) id = 0;
+
+        layout->Add(panels[id]->getLayout());
+
+        return vbox({
+            // здесь хэдер
+            panels[0]->getElement(),
+            separator(),
+            // здесь будет само меню
+            panels[menuctl.getID()]->getElement()
+        }) | border;
+    });
+
+    panels[0]->getLayout()->ChildAt(1)->TakeFocus();
+
+    screen.Loop(renderer);
+
+    // py.~PythonEmbed();
+
+    return 0;
+}
