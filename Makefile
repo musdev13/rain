@@ -1,26 +1,28 @@
 CXX = g++
-# CXXFLAGS = $(shell python3-config --cflags)
-# LDFLAGS = -lpython$(shell python3 -V 2>&1 | grep -oP '\d+\.\d+') -ldl -lm -lftxui-component -lftxui-dom -lftxui-screen
+CXXFLAGS = -std=c++20 -Wall -Wextra -I./src
 LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv
 
-SRC_DIR = src
-BUILD_DIR = build
+SRC_DIRS := src src/panels src/buttonOptions
+BUILD_DIR := build
+TARGET := $(BUILD_DIR)/main
 
-SRC = $(wildcard $(SRC_DIR)/*.cpp)
-OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRC))
-TARGET = $(BUILD_DIR)/main
+SRC := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
+
+OBJ := $(patsubst %.cpp,$(BUILD_DIR)/%.o,$(SRC))
+
+DIRS := $(sort $(dir $(OBJ)))
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(BUILD_DIR)
+$(BUILD_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(BUILD_DIR)
-	# rm -rf $(SRC_DIR)/__pycache__
+
 run:
-	$(TARGET) /home/$(shell whoami)/Music/iknow 
+	$(TARGET) /home/$(shell whoami)/Music/iknow

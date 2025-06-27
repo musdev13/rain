@@ -1,3 +1,4 @@
 .vscode/
-src/main.cpp.bak
+*.bak
 build/
+*.log
