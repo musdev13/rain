@@ -13,18 +13,28 @@ private:
     ScreenInteractive* screen;
     std::thread updateThread;
     std::atomic<bool> active{true};
+    std::string config_path = std::string(std::getenv("HOME")) + "/.config/mtui/config.cfg";
+
+    bool paused;
+    std::string icon = "";
     
     std::string title;
     std::string artist;
     std::string position = "0:00";
     std::string duration = "0:00";
-
     Component pp;
+
+    std::string volume;
+    Component volLess;
+    Component volMore;
 
 public:
     playerCtl(mpv_handle* mpvv, ScreenInteractive& screenr);
     ~playerCtl();
 
     Element getElement() override;
+
+    double load_volume();
+    void save_volume(double vol);
 
 };
