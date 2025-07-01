@@ -40,7 +40,7 @@ playerCtl::playerCtl(mpv_handle* mpvv, ScreenInteractive& screenr) {
     artist = "Unknown";
     volume = "n";
 
-    config_path = (fs::path(getenv("HOME")) / ".config/mtui/volume.cfg").string();
+    config_path = (fs::path(getenv("HOME")) / ".config/rain/volume.cfg").string();
     fs::create_directories(fs::path(config_path).parent_path());
 
     double initial_volume = load_volume();
@@ -136,7 +136,7 @@ Element playerCtl::getElement() {
         text(" "),
         vbox({
             hbox({
-                text(title + " — " + artist) | center | flex
+                text(title + " - " + artist) | center | flex
             }),
             hbox({
                 text(position),

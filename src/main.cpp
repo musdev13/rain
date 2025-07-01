@@ -27,12 +27,16 @@ int main(int argc, char* argv[]){
     Menuctl menuctl;
     auto screen = ScreenInteractive::TerminalOutput();
     std::vector<std::unique_ptr<panelBase>> panels;
-    Header* header = new Header(&menuctl, &screen);
-    panels.push_back(std::unique_ptr<panelBase>(header));
+    // panels.push_back(std::unique_ptr<panelBase>(header));
+    panels.push_back(std::make_unique<Blank>());
     panels.push_back(std::make_unique<Settings>());
     panels.push_back(std::make_unique<Blank>());
     panels.push_back(std::make_unique<MediaList>(files, mpv, argv[1]));
     panels.push_back(std::make_unique<playerCtl>(mpv,screen));
+
+    Header* header = new Header(&menuctl, &screen);
+    panels[0] = std::unique_ptr<panelBase>(header);
+
 
     auto layout = Container::Vertical({});
     
@@ -72,6 +76,16 @@ int main(int argc, char* argv[]){
         }
         if (event == Event::CtrlS){
             panels[4]->getLayout()->ChildAt(0)->TakeFocus();
+            return true;
+        }
+        if (event == Event::ArrowLeftCtrl){
+            const char* seek_backward[] = {"seek", "-5", "relative", nullptr};
+            mpv_command(mpv, seek_backward);
+            return true;
+        }
+        if (event == Event::ArrowRightCtrl){
+            const char* seek_forward[] = {"seek", "5", "relative", nullptr};
+            mpv_command(mpv, seek_forward);
             return true;
         }
         return false;

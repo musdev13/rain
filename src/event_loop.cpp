@@ -1,4 +1,5 @@
 #include "mus.h/event_loop.hpp"
+#include "mus.h/atomic_vars.hpp"
 
 void event_loop(mpv_handle* mpv, const std::vector<std::string>& playlist) {
     while (running){
@@ -17,6 +18,7 @@ void event_loop(mpv_handle* mpv, const std::vector<std::string>& playlist) {
             }
             // logFile << "CURRENT ++" << std::endl;
             current = (current + 1) % playlist.size();
+            selected_global = static_cast<int>(current);
             std::string path = playlist[current];
             // logFile << "TRYING TO START MPV:" << std::endl << "\t"<<path << std::endl;
             const char* cmd[] = {"loadfile", path.c_str(), "replace", nullptr};

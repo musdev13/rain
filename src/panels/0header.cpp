@@ -13,11 +13,8 @@ Header::Header(Menuctl* menuctl, ScreenInteractive* screen){
         }
         screen->PostEvent(Event::Custom);
     }, btnHeaderStyle());
-    button2 = Button("", [] {}, btnHeaderStyle());
     ftxui::InputOption options;
-    options.placeholder = "Search...";
-    options.on_enter = [&]{
-    };
+    options.placeholder = " Search...";
     
     input = Input(&inputContent, options);
 
@@ -30,7 +27,6 @@ Header::Header(Menuctl* menuctl, ScreenInteractive* screen){
     layout = Container::Horizontal({
         button1,
         inputBlocked,
-        button2,
     });
 }
 
@@ -38,7 +34,6 @@ ftxui::Element Header::getElement() {
     return hbox({
         button1->Render() | center,
         input->Render(),
-        button2->Render() | center,
     });
 }
 

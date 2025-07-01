@@ -1,10 +1,10 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Wextra -I./src
-LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv
+LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv -ltag
 
 SRC_DIRS := src src/panels src/buttonOptions
 BUILD_DIR := build
-TARGET := $(BUILD_DIR)/mtui
+TARGET := $(BUILD_DIR)/rain
 
 SRC := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 
