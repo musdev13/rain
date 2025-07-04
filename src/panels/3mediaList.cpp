@@ -1,10 +1,10 @@
 #include "../mus.h/panels/3mediaList.hpp"
 #include <ftxui/component/screen_interactive.hpp>
 
-void logToFile(const std::string& message) {
-    std::ofstream log("debug_log.txt", std::ios::app);
-    log << message << std::endl;
-}
+// void logToFile(const std::string& message) {
+//     // std::ofstream log("debug_log.txt", std::ios::app);
+//     // log << message << std::endl;
+// }
 
 MediaList::MediaList(const std::vector<std::string>& inputItems, mpv_handle* mpvv, const std::string& pathToFolder){
     // items = {"1","2","3","4","5","6","7","8","9","10"};
@@ -20,15 +20,16 @@ MediaList::MediaList(const std::vector<std::string>& inputItems, mpv_handle* mpv
 
         formatedItems.push_back(title+" - "+artist);
     }
+    list = formatedItems;
     selected = 0;
     MenuOption opt;
     opt.on_enter = [&]{
         // std::cout << items[selected] << std::endl;
         std::string full_path = folderPath + "/" + items[selected];
         // std::cout << full_path << std::endl;
-        std::ofstream logFile("mpv_debug.log", std::ios::app);
-        logFile << "Загружаю: " << full_path << std::endl;
-        logFile.close();
+        // std::ofstream logFile("mpv_debug.log", std::ios::app);
+        // logFile << "Загружаю: " << full_path << std::endl;
+        // logFile.close();
         const char* cmd[] = {"loadfile", full_path.c_str(), "replace", nullptr};
         mpv_command(mpv, cmd);
         current = selected;
@@ -41,7 +42,7 @@ MediaList::MediaList(const std::vector<std::string>& inputItems, mpv_handle* mpv
     opt.on_change = [&]{
         selected_global = selected;
     };
-    menu = Menu(&formatedItems,&selected, opt);
+    menu = Menu(&list,&selected, opt);
 
     layout = Container::Horizontal({menu});
 }

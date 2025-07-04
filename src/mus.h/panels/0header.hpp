@@ -3,7 +3,9 @@
 #include "../menuctl.hpp"
 #include <ftxui/component/screen_interactive.hpp>
 #include "../buttonOptions/btnHeaderStyle.hpp"
-
+#include <iostream>
+#include "../atomic_vars.hpp"
+// #include <unistd.h>
 
 
 class Header : public panelBase {
