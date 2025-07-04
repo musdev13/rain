@@ -33,6 +33,7 @@ int main(int argc, char* argv[]){
     panels.push_back(std::make_unique<Blank>());
     panels.push_back(std::make_unique<MediaList>(files, mpv, argv[1]));
     panels.push_back(std::make_unique<playerCtl>(mpv,screen));
+    panels.push_back(std::make_unique<HelpPanel>());
 
     Header* header = new Header(&menuctl, &screen);
     panels[0] = std::unique_ptr<panelBase>(header);
@@ -57,7 +58,10 @@ int main(int argc, char* argv[]){
             panels[0]->getElement(),
             separator(),
             // здесь будет само меню
-            panels[menuctl.getID()]->getElement(),
+            hbox({
+                panels[menuctl.getID()]->getElement(),
+                infoPanel ? (panels[5]->getElement()):(filler())
+            }) | flex,
             separator(),
             panels[4]->getElement(),
         }) | border;
@@ -86,6 +90,10 @@ int main(int argc, char* argv[]){
         if (event == Event::ArrowRightCtrl){
             const char* seek_forward[] = {"seek", "5", "relative", nullptr};
             mpv_command(mpv, seek_forward);
+            return true;
+        }
+        if (event == Event::CtrlB){
+            infoPanel ? infoPanel = false : infoPanel = true;
             return true;
         }
         return false;

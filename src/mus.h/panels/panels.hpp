@@ -5,3 +5,4 @@
 #include "1settings.hpp"
 #include "3mediaList.hpp"
 #include "4playerctl.hpp"
+#include "5help.hpp"
