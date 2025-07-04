@@ -2,7 +2,7 @@
 #include "mus.h/panels/panels.hpp"
 
 int main(int argc, char* argv[]){
-    std::vector<std::string> files = getFilesInDirectory(argv[1]);
+    std::vector<std::string> files = getFiles(argv[1]);
     mpv_handle* mpv = mpv_create();
     // mpv_request_log_messages(mpv, "v");
     // mpv_set_option_string(mpv, "no-video", "yes");
