@@ -1,8 +1,16 @@
 #include "mus.h/filefs.hpp"
 #include "mus.h/panels/panels.hpp"
+// #include "mus.h/spotify/getTrackInfo.hpp"
+#include "mus.h/spotify/getTrack.hpp"
 
 int main(int argc, char* argv[]){
     std::vector<std::string> files = getFiles(argv[1]);
+    // std::string artist;
+    // std::string title;
+    // getTrackInfo("2C1NoGfuZRlp5Cz7AQ6gEt", title, artist);
+    // system(("notify-send \""+ title +" - "+artist+"\"").c_str());
+    // getTrack("2C1NoGfuZRlp5Cz7AQ6gEt","file.mp3");
+    
     mpv_handle* mpv = mpv_create();
     // mpv_request_log_messages(mpv, "v");
     // mpv_set_option_string(mpv, "no-video", "yes");

@@ -1,8 +1,8 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Wextra -I./src
-LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv -ltag
+LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv -ltag -lcurl
 
-SRC_DIRS := src src/panels src/buttonOptions
+SRC_DIRS := src src/panels src/buttonOptions src/spotify
 BUILD_DIR := build
 TARGET := $(BUILD_DIR)/rain
 
