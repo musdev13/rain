@@ -15,14 +15,14 @@
 
 <div align="center">
 
-> It's just my C++ thesis, so it's not even beta, i guess. Rain is still in development and may contain a bunch of bugs. So... don't worry about that. Just report me about them, k.? :3
-
+> It's just my C++ thesis💻, so it's not even beta, I guess. Rain is still in development and may contain a bunch of bugs🐛 So... don't worry about that. Just report me about them, k.? :3
 </div>
 
 <div align="center", style="border: 3px solid white; border-radius:15px;padding:10px 20px">
     <h1 align="center">About</h1>
-    <p><b>Rain - is a TUI player based on mpv</b>. It can play locally downloaded tracks in a folder, but tracks from Spotify and later SoundCloud will be added soon!</p>
-    <p>and.. of course, it's absolutely free!</p>
+    <p><b>Rain🌧️ — is a TUI player based on mpv</b>. It can play locally downloaded tracks in a folder, but tracks from Spotify🎧 and later SoundCloud☁️ will be added soon!</p>
+    <p>And... of course, it's absolutely free!💖</p>
+
 
 <h2 align="center">What can it do?</h2>
 <p align="center">in fact, just the <b>basic things</b>:</p>
