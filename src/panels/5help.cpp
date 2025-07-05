@@ -11,7 +11,8 @@ ftxui::Element HelpPanel::getElement(){
             ftxui::text(" Ctrl+S - focus on play button "),
             ftxui::text(" Ctrl+←→ - change track pos "),
             ftxui::text(""),
-            ftxui::text(" Ctrl+B - show/hide this panel ")
+            ftxui::text(" Ctrl+B - show/hide this panel "),
+            ftxui::text(" Ctrl+Q - quit ")
         })
     });
 }
