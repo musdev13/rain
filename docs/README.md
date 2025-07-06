@@ -7,11 +7,14 @@
         <img src="https://img.shields.io/badge/cuteemus--5865F2?logo=discord&style=for-the-badge" alt="Discord" style="border-radius:5px;border:3px solid #5865f2"/>
     </a>
     <a href="https://github.com/musdev13">
-        <img src="https://img.shields.io/badge/musdev13--181717?logo=github&style=for-the-badge" style="border-radius:5px;border:3px solid #181717">
+        <img src="https://img.shields.io/badge/musdev13--white?logo=github&style=for-the-badge" style="border-radius:5px;border:3px solid #fff">
+    </a>
+    <a href="https://musdev13.github.io/rain/">
+        <img src="https://img.shields.io/badge/🌐_Website--0fa0dd?style=for-the-badge" style="border-radius:5px;border:3px solid #0fa0dd"/>
     </a>
 </p>
 
-<img src="public/assets/mainScreenshot.png" style="border-radius:15px;border:3px solid white;margin-bottom:10px;">
+<img src="public/assets/mainScreenshot.png" style="border-radius:15px;border:3px solid white;">
 
 <div align="center">
 
