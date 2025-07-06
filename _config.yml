@@ -1,3 +1,0 @@
-makrdown: kramdown
-kramdown:
-  input: GFM
