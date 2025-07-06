@@ -6,7 +6,7 @@
     <a href="https://discord.com/users/870324942166716487" style="margin-right:5px;">
         <img src="https://img.shields.io/badge/cuteemus--5865F2?logo=discord&style=for-the-badge" alt="Discord" style="border-radius:5px;border:3px solid #5865f2"/>
     </a>
-    <a href="https://github.com/musdev13">
+    <a href="https://github.com/musdev13" style="margin-right:5px;">
         <img src="https://img.shields.io/badge/musdev13--white?logo=github&style=for-the-badge" style="border-radius:5px;border:3px solid #fff">
     </a>
     <a href="https://musdev13.github.io/rain/">
