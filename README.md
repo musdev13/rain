@@ -37,6 +37,7 @@
 | Search track         | ✅  |             It was SO hard to make this at the first moment |
 | Spotify tracks       | 🛠️  | I made a functions, but I haven't used them in the code yet |
 | SoundCloud tracks    | ❌  |                               It will be in the soon future |
+| Youtube Music tracks | ❌  |                                     Yeah, it's a great idea |
 | Offline playback     | ❌  |     I need to make Spotify and SoundCloud tracks work first |
 
 </div>
