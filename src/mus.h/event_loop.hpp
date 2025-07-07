@@ -4,6 +4,9 @@
 #include <iostream>
 // #include <fstream>
 #include "atomic_vars.hpp"
+#include "filefs.hpp"
+#include "spotify/getTrackInfo.hpp"
+#include "spotify/getTrack.hpp"
 
 
-void event_loop(mpv_handle* mpv, const std::vector<std::string>& playlist);
+void event_loop(mpv_handle* mpv);

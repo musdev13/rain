@@ -6,3 +6,6 @@ std::atomic<bool> manual_change(false);
 std::atomic<int> selected_global(0);
 std::vector<std::string> list ={};
 std::atomic<bool> infoPanel(true);
+std::atomic<bool> updateList(false);
+
+std::vector<std::string> fullPaths;

@@ -1,6 +1,24 @@
 // filefs.cpp
 #include "mus.h/filefs.hpp"
 
+std::vector<std::string> readInf(const std::string& path) {
+    std::ifstream file(path);
+    std::vector<std::string> lines;
+    std::string line;
+
+    while (std::getline(file, line) && lines.size() < 2) {
+        lines.push_back(line);
+    }
+
+    return lines;
+}
+
+void writeFile(const std::string& path, const std::string& content) {
+    std::ofstream file(path, std::ios::out | std::ios::trunc);
+
+    file << content;
+}
+
 void removeAll(std::string& str, const std::string& what) {
   size_t pos;
   while ((pos = str.find(what)) != std::string::npos) {
@@ -57,3 +75,5 @@ std::vector<std::string> getFiles(fs::path folderPath){
 
     return playlist;
 }
+
+std::string cacheFolder = std::string(fs::path(getenv("HOME"))) + "/.cache/rain/";

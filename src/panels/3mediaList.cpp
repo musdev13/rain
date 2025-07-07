@@ -6,59 +6,69 @@
 //     // log << message << std::endl;
 // }
 
-MediaList::MediaList(const std::vector<std::string>& inputItems, mpv_handle* mpvv, const std::string& pathToFolder){
-    // items = {"1","2","3","4","5","6","7","8","9","10"};
-    folderPath=pathToFolder;
+MediaList::MediaList(const std::vector<std::string>& inputItems, mpv_handle* mpvv, const std::string& pathToFolder) {
+    folderPath = pathToFolder;
     items = inputItems;
-    mpv=mpvv;
-    for (std::string track:items){
-        std::cout << track << std::endl;
-        std::string title;
-        std::string artist;
-        if (track.find("@rain:spotify\\") != std::string::npos){
-            removeAll(track, "@rain:spotify\\");
-            std::cout << track << std::endl;
-            getTrackInfo(track,title,artist);
-        }
-        else {
-            TagLib::FileRef f((folderPath+"/"+track).c_str());
-            
-            TagLib::Tag* tag = f.tag();
-            title = tag->title().to8Bit(true);
-            artist = tag->artist().to8Bit(true);
-        }
+    mpv = mpvv;
 
-        formatedItems.push_back(title+" - "+artist);
+    formatedItems.resize(items.size());
+    fullPaths.resize(items.size());
+
+    for (size_t i = 0; i < items.size(); ++i) {
+        std::string track = items[i];
+        std::string title, artist;
+
+        if (track.find("@rain:spotify\\") != std::string::npos) {
+            std::string id = track;
+            removeAll(id, "@rain:spotify\\");
+            std::string mp3_path = cacheFolder + id + ".mp3";
+            std::string info_path = cacheFolder + id + ".infosp";
+
+            if (fs::exists(mp3_path) && fs::exists(info_path)) {
+                std::vector<std::string> trackInfo = readInf(info_path);
+                title = trackInfo.size() > 0 ? trackInfo[0] : "unknown";
+                artist = trackInfo.size() > 1 ? trackInfo[1] : "unknown";
+                fullPaths[i] = mp3_path;
+            } else {
+                title = "loading";
+                artist = "loading";
+                fullPaths[i] = track; // временно, до загрузки
+            }
+        } else {
+            TagLib::FileRef f((folderPath + "/" + track).c_str());
+            TagLib::Tag* tag = f.tag();
+            title = tag ? tag->title().to8Bit(true) : "unknown";
+            artist = tag ? tag->artist().to8Bit(true) : "unknown";
+            fullPaths[i] = folderPath + "/" + track;
+        }
+        formatedItems[i] = title + " - " + artist;
     }
+
     list = formatedItems;
     selected = 0;
-    MenuOption opt;
-    opt.on_enter = [&]{
-        // std::cout << items[selected] << std::endl;
-        std::string full_path = folderPath + "/" + items[selected];
-        // std::cout << full_path << std::endl;
-        // std::ofstream logFile("mpv_debug.log", std::ios::app);
-        // logFile << "Загружаю: " << full_path << std::endl;
-        // logFile.close();
-        const char* cmd[] = {"loadfile", full_path.c_str(), "replace", nullptr};
-        mpv_command(mpv, cmd);
-        current = selected;
-        manual_change = true;
-        std::thread([](){
-            std::this_thread::sleep_for(std::chrono::milliseconds(300));
-            manual_change = false;
-        }).detach();
+    opt.on_enter = [&] {
+        if (selected >= 0 && selected < (int)fullPaths.size()) {
+            std::string path = fullPaths[selected];
+            if (fs::exists(path)) {
+                const char* cmd[] = {"loadfile", path.c_str(), "replace", nullptr};
+                mpv_command(mpv, cmd);
+                current = selected;
+                manual_change = true;
+                std::thread([]() {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(300));
+                    manual_change = false;
+                }).detach();
+            }
+        }
     };
-    opt.on_change = [&]{
+    opt.on_change = [&] {
         selected_global = selected;
     };
-    menu = Menu(&list,&selected, opt);
-
+    menu = Menu(&list, &selected, opt);
     layout = Container::Horizontal({menu});
 }
 
-
-ftxui::Element MediaList::getElement(){
+ftxui::Element MediaList::getElement() {
     selected = selected_global.load();
     return hbox({
         menu->Render()

@@ -40,7 +40,7 @@ void getTrackInfo(const std::string& trackID, std::string& title, std::string& a
     curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
 
     CURLcode res = curl_easy_perform(curl);
-    std::cout << response_string << std::endl;
+    // std::cout << response_string << std::endl;
     json j = json::parse(response_string);
     std::string titleTemp = j["name"];
 

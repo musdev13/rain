@@ -16,6 +16,7 @@ int main(int argc, char* argv[]){
     // mpv_set_option_string(mpv, "no-video", "yes");
     // mpv_set_option_string(mpv, "terminal", "yes");
     mpv_set_option_string(mpv, "vo", "null");
+    // mpv_set_property_string(mpv, "keep-open", "yes");
     if (!mpv) {
         std::cerr << "Ошибка создания mpv\n";
         return 1;
@@ -26,22 +27,21 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    std::vector<std::string> fullPaths;
+    
     for (const auto& file : files) {
         fs::create_directories(fs::path(fs::path(getenv("HOME"))/".cache/rain/test").parent_path());
         
         if (file.find("@rain:spotify\\") != std::string::npos){
-            std::string ffile = file;
-            removeAll(ffile,"@rain:spotify\\");
+            // removeAll(ffile,"@rain:spotify\\");
             // system(("notify-send \""+ffile+"\"").c_str());
-            fullPaths.push_back(std::string(fs::path(getenv("HOME"))) + "/.cache/rain/" + ffile + ".mp3");
+            fullPaths.push_back(file);
             
         } else fullPaths.push_back(std::string(argv[1]) + "/" + file);
     }
     // for (auto file:fullPaths){
     //     std::cout << file << std::endl;
     // }
-    std::thread eventThread(event_loop, mpv, fullPaths);
+    
 
     Menuctl menuctl;
     auto screen = ScreenInteractive::TerminalOutput();
@@ -57,10 +57,11 @@ int main(int argc, char* argv[]){
     Header* header = new Header(&menuctl, &screen);
     panels[0] = std::unique_ptr<panelBase>(header);
 
+    std::thread eventThread(event_loop, mpv);
+
 
     auto layout = Container::Vertical({});
     
-
 
     auto renderer = Renderer(layout, [&]{
         layout->DetachAllChildren();
@@ -101,14 +102,21 @@ int main(int argc, char* argv[]){
             panels[4]->getLayout()->ChildAt(0)->TakeFocus();
             return true;
         }
-        if (event == Event::ArrowLeftCtrl){
-            const char* seek_backward[] = {"seek", "-5", "relative", nullptr};
-            mpv_command(mpv, seek_backward);
-            return true;
-        }
-        if (event == Event::ArrowRightCtrl){
+        double time_pos = 0;
+        double duration = 0;
+
+        mpv_get_property(mpv, "time-pos", MPV_FORMAT_DOUBLE, &time_pos);
+        mpv_get_property(mpv, "duration", MPV_FORMAT_DOUBLE, &duration);
+
+        if (event == Event::ArrowRightCtrl && time_pos + 5 < duration) {
             const char* seek_forward[] = {"seek", "5", "relative", nullptr};
             mpv_command(mpv, seek_forward);
+            return true;
+        }
+
+        if (event == Event::ArrowLeftCtrl && time_pos > 5) {
+            const char* seek_backward[] = {"seek", "-5", "relative", nullptr};
+            mpv_command(mpv, seek_backward);
             return true;
         }
         if (event == Event::CtrlB){

@@ -10,6 +10,7 @@
 
 #include "../filefs.hpp"
 #include "../spotify/getTrackInfo.hpp"
+#include "../spotify/getTrack.hpp"
 
 
 class MediaList : public panelBase {
@@ -20,6 +21,7 @@ private:
     std::vector<std::string> formatedItems;
     mpv_handle* mpv;
     std::string folderPath;
+    MenuOption opt;
 public:
     MediaList(const std::vector<std::string>& inputItems, mpv_handle* mpvv, const std::string& pathToFolder);
 
