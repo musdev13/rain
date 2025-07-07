@@ -11,6 +11,8 @@ void getTrackInfo(const std::string& trackID, std::string& title, std::string& a
     std::string response_string;
     std::string spotifyUrl = "https://open.spotify.com/track/"+trackID;
     std::string data = R"({"spotify_url": ")" + spotifyUrl + R"("})";
+    Tokens t = getTokens();
+    
 
     struct curl_slist *headers = nullptr;
     headers = curl_slist_append(headers, "Accept: */*");
@@ -18,11 +20,11 @@ void getTrackInfo(const std::string& trackID, std::string& title, std::string& a
     headers = curl_slist_append(headers, "Accept-Encoding: gzip, deflate, br, zstd");
     headers = curl_slist_append(headers, "Referer: https://spotmate.online/en");
     headers = curl_slist_append(headers, "Content-Type: application/json");
-    headers = curl_slist_append(headers, "X-CSRF-TOKEN: YEDtUGqKz7bp3iexVcUd1kvbi2BHlpOLBuPyXjsF");
+    headers = curl_slist_append(headers, ("X-CSRF-TOKEN: "+t.csrf).c_str());
     headers = curl_slist_append(headers, "Origin: https://spotmate.online");
     headers = curl_slist_append(headers, "Sec-GPC: 1");
     headers = curl_slist_append(headers, "Connection: keep-alive");
-    headers = curl_slist_append(headers, "Cookie: XSRF-TOKEN=eyJpdiI6IjQyRWluM0djeWdTaFd4OUlneG16Y0E9PSIsInZhbHVlIjoiSTJUNFdYU0p6Q1paMDdLL05aejJ0WjI4bVZZYzRSR3lUMGdVUU1oYmUxNEMxMFlCdjFhN09vUndzYndnMnhvVHVhNEVucU5QcXRIYnduR2M4RERDMjVhVUh4M2RtSVpjSUo0aGpMd3dQN3hXK0xSYzl5REJ3dTAzNXBvT1BybGQiLCJtYWMiOiIwZDBmYWRkMDJmNDY2YzRkMjMyOWE3NTBiOTUzMjk0YjhiODg1NDc3NDAwODhjNmY5MWU3Y2RkYzFjZDFmZTkyIiwidGFnIjoiIn0%3D; spotmateonline_session=eyJpdiI6IlRBVDNpS3hUWlBOZEc3L0JWb3NKYXc9PSIsInZhbHVlIjoibkx3MHpQb1o3a0EzSkc5bDFVYkMvYm9lZ0ZaVk9hcjV3bkx2RmpFQTNQbGlPODdzWXpNY0pQM1NVN0Eyb0NSTU9lTVFnSTJJUXFOVENhQ0NJUWxKaENXZGJ5TXVwY0lDa09NdEU2dG9oWnVXM2tFZUdXck9seXAxN0tMR3Y0clYiLCJtYWMiOiIzOTZkZGI0YzgzOTRiZWU1OGI0ZWY4NGE0ZWZhOTA5NzEzODJmNmU5ZjU4MmE5YjcwZGJhOGI0MDU5YTM3NGM2IiwidGFnIjoiIn0%3D");
+    headers = curl_slist_append(headers, ("Cookie: XSRF-TOKEN="+t.xsrf+"; spotmateonline_session="+t.session).c_str());
     headers = curl_slist_append(headers, "Sec-Fetch-Dest: empty");
     headers = curl_slist_append(headers, "Sec-Fetch-Mode: cors");
     headers = curl_slist_append(headers, "Sec-Fetch-Site: same-origin");
@@ -38,6 +40,7 @@ void getTrackInfo(const std::string& trackID, std::string& title, std::string& a
     curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
 
     CURLcode res = curl_easy_perform(curl);
+    std::cout << response_string << std::endl;
     json j = json::parse(response_string);
     std::string titleTemp = j["name"];
 

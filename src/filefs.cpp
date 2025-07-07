@@ -1,6 +1,13 @@
 // filefs.cpp
 #include "mus.h/filefs.hpp"
 
+void removeAll(std::string& str, const std::string& what) {
+  size_t pos;
+  while ((pos = str.find(what)) != std::string::npos) {
+    str.erase(pos, what.length());
+  }
+}
+
 std::vector<std::string> readPlaylist(const fs::path& playlistPath) {
     std::vector<std::string> lines;
     std::ifstream file(playlistPath);

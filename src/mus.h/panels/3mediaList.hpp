@@ -8,6 +8,9 @@
 #include <algorithm>
 #include <cctype>
 
+#include "../filefs.hpp"
+#include "../spotify/getTrackInfo.hpp"
+
 
 class MediaList : public panelBase {
 private:

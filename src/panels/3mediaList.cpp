@@ -12,11 +12,21 @@ MediaList::MediaList(const std::vector<std::string>& inputItems, mpv_handle* mpv
     items = inputItems;
     mpv=mpvv;
     for (std::string track:items){
-        TagLib::FileRef f((folderPath+"/"+track).c_str());
-        
-        TagLib::Tag* tag = f.tag();
-        std::string title = tag->title().to8Bit(true);
-        std::string artist = tag->artist().to8Bit(true);
+        std::cout << track << std::endl;
+        std::string title;
+        std::string artist;
+        if (track.find("@rain:spotify\\") != std::string::npos){
+            removeAll(track, "@rain:spotify\\");
+            std::cout << track << std::endl;
+            getTrackInfo(track,title,artist);
+        }
+        else {
+            TagLib::FileRef f((folderPath+"/"+track).c_str());
+            
+            TagLib::Tag* tag = f.tag();
+            title = tag->title().to8Bit(true);
+            artist = tag->artist().to8Bit(true);
+        }
 
         formatedItems.push_back(title+" - "+artist);
     }

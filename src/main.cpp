@@ -28,8 +28,19 @@ int main(int argc, char* argv[]){
 
     std::vector<std::string> fullPaths;
     for (const auto& file : files) {
-        fullPaths.push_back(std::string(argv[1]) + "/" + file);
+        fs::create_directories(fs::path(fs::path(getenv("HOME"))/".cache/rain/test").parent_path());
+        
+        if (file.find("@rain:spotify\\") != std::string::npos){
+            std::string ffile = file;
+            removeAll(ffile,"@rain:spotify\\");
+            // system(("notify-send \""+ffile+"\"").c_str());
+            fullPaths.push_back(std::string(fs::path(getenv("HOME"))) + "/.cache/rain/" + ffile + ".mp3");
+            
+        } else fullPaths.push_back(std::string(argv[1]) + "/" + file);
     }
+    // for (auto file:fullPaths){
+    //     std::cout << file << std::endl;
+    // }
     std::thread eventThread(event_loop, mpv, fullPaths);
 
     Menuctl menuctl;
