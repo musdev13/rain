@@ -38,7 +38,7 @@
 | Change track volume  | ✅  |                                It's very usefull for me btw |
 | Change track pos     | ✅  |                   Idk, it's not hard to made like first two |
 | Search track         | ✅  |             It was SO hard to make this at the first moment |
-| Spotify tracks       | 🛠️  | I made a functions, but I haven't used them in the code yet |
+| Spotify tracks       | 🛠️  |                                      it's done, but bugs... |
 | SoundCloud tracks    | ❌  |                               It will be in the soon future |
 | Youtube Music tracks | ❌  |                                     Yeah, it's a great idea |
 | Offline playback     | ❌  |     I need to make Spotify and SoundCloud tracks work first |
@@ -62,6 +62,7 @@
     <li><a href="https://github.com/ArthurSonzogni/FTXUI">ftxui</a></li>
     <li>libmpv</li>
     <li>tagLib</li>
+    <li>curl (for spotify branch)</li>
 </ul>
 
 > Tell me pls if i forgot to add some library to list
@@ -71,6 +72,11 @@
 first you need to **clone repo** and **cd into Rain directory**:
 ```sh
 git clone --depth 1 https://github.com/musdev13/rain.git
+cd rain
+```
+or if you want to build a **spotify branch**:
+```sh
+git clone --branch spotify --depth 1 https://github.com/musdev13/rain.git
 cd rain
 ```
 Now you can **build Rain using make**:
@@ -110,6 +116,21 @@ You **can change the track order** to your own **in this file**.
 > changes will be applied after restart
 
 If you later add the track to a folder, Rain will **automatically add the file to the list** on startup
+
+---
+
+if you'r using rain from **spotify branch**, you can add spotify track into **playlist file** by adding this line:
+```playlist
+@rain:spotify\TrackID
+```
+
+**example**:
+
+<p>https://open.spotify.com/track/<b>2GlV9w8oHSQdiPPk9lxqlp</b>?si=e284376a9c5448d7:</p>
+
+```playlist
+@rain:spotify\2GlV9w8oHSQdiPPk9lxqlp
+```
 
 <h2>Navigation</h2>
 
