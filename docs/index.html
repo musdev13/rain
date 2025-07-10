@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rain - README</title>
+  <style>
+    body {
+      background: #101315;
+      color: #eee;
+      font-family: sans-serif;
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    img {
+      max-width: 99%;
+      border-radius: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    td, th {
+      border: 1px solid #555;
+      padding: 6px 12px;
+    }
+    pre {
+      background: #222;
+      padding: 1em;
+      overflow: auto;
+    }
+    a {
+      color: #6cf;
+    }
+    blockquote {
+        border-left: 3px solid #888;
+        margin: 0.8em 0;
+        padding: 0.1em 0.8em;
+        background-color: #1a1a1a;
+        color: #bbb;
+        font-style: italic;
+        font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <main id="content">Loading README...</main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    fetch("README.md")
+      .then(res => res.text())
+      .then(md => {
+        document.getElementById("content").innerHTML = marked.parse(md);
+      });
+  </script>
+</body>
+</html>
