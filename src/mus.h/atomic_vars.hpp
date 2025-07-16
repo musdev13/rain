@@ -13,3 +13,6 @@ extern std::vector<std::string> list;
 extern std::atomic<bool> infoPanel;
 extern std::atomic<bool> updateList;
 extern std::vector<std::string> fullPaths;
+extern std::string pathToFolder;
+extern std::vector<std::string> files;
+extern std::vector<std::string> formatedItems;

@@ -5,28 +5,30 @@
 #include <atomic>
 
 void preload_tracks() {
-    for (size_t i = 0; i < fullPaths.size(); ++i) {
-        if (fullPaths[i].find("@rain:spotify\\") != std::string::npos) {
-            std::string id = fullPaths[i];
-            removeAll(id, "@rain:spotify\\");
-            std::string mp3_path = cacheFolder + id + ".mp3";
-            std::string info_path = cacheFolder + id + ".infosp";
+    while (running) {
+        for (size_t i = 0; i < fullPaths.size(); ++i) {
+            if (fullPaths[i].find("@rain:spotify\\") != std::string::npos) {
+                std::string id = fullPaths[i];
+                removeAll(id, "@rain:spotify\\");
+                std::string mp3_path = cacheFolder + id + ".mp3";
+                std::string info_path = cacheFolder + id + ".infosp";
 
-            if (!fs::exists(mp3_path) || !fs::exists(info_path)) {
-                std::string title, artist;
-                getTrackInfo(id, title, artist);
-                getTrack(id, cacheFolder + id + ".dwnld");
+                if (!fs::exists(mp3_path) || !fs::exists(info_path)) {
+                    std::string title, artist;
+                    getTrackInfo(id, title, artist);
+                    getTrack(id, cacheFolder + id + ".dwnld");
 
-                if (fs::exists(cacheFolder + id + ".dwnld")) {
-                    fs::rename(cacheFolder + id + ".dwnld", mp3_path);
-                    writeFile(info_path, title + "\n" + artist);
+                    if (fs::exists(cacheFolder + id + ".dwnld")) {
+                        fs::rename(cacheFolder + id + ".dwnld", mp3_path);
+                        writeFile(info_path, title + "\n" + artist);
 
-                    list[i] = title + " - " + artist;
+                        list[i] = title + " - " + artist;
 
+                        fullPaths[i] = mp3_path;
+                    }
+                } else {
                     fullPaths[i] = mp3_path;
                 }
-            } else {
-                fullPaths[i] = mp3_path;
             }
         }
     }

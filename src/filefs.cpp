@@ -1,5 +1,6 @@
 // filefs.cpp
 #include "mus.h/filefs.hpp"
+#include "mus.h/atomic_vars.hpp"
 
 std::vector<std::string> readInf(const std::string& path) {
     std::ifstream file(path);
@@ -77,3 +78,55 @@ std::vector<std::string> getFiles(fs::path folderPath){
 }
 
 std::string cacheFolder = std::string(fs::path(getenv("HOME"))) + "/.cache/rain/";
+
+void refreshList(){
+    files = getFiles(pathToFolder);
+
+    for (const auto& file : files) {
+        fullPaths.clear();
+        fs::create_directories(fs::path(fs::path(getenv("HOME"))/".cache/rain/test").parent_path());
+
+        if (file.find("@rain:spotify\\") != std::string::npos){
+            // removeAll(ffile,"@rain:spotify\\");
+            // system(("notify-send \""+ffile+"\"").c_str());
+            fullPaths.push_back(file);
+
+        } else fullPaths.push_back(std::string(pathToFolder + "/" + file));
+    }
+
+    formatedItems.clear();
+    formatedItems.resize(files.size());
+    fullPaths.resize(files.size());
+
+    for (size_t i = 0; i < files.size(); ++i) {
+        std::string track = files[i];
+        std::string title, artist;
+
+        if (track.find("@rain:spotify\\") != std::string::npos) {
+            std::string id = track;
+            removeAll(id, "@rain:spotify\\");
+            std::string mp3_path = cacheFolder + id + ".mp3";
+            std::string info_path = cacheFolder + id + ".infosp";
+
+            if (fs::exists(mp3_path) && fs::exists(info_path)) {
+                std::vector<std::string> trackInfo = readInf(info_path);
+                title = trackInfo.size() > 0 ? trackInfo[0] : "unknown";
+                artist = trackInfo.size() > 1 ? trackInfo[1] : "unknown";
+                fullPaths[i] = mp3_path;
+            } else {
+                title = "loading";
+                artist = "loading";
+                fullPaths[i] = track; // временно, до загрузки
+            }
+        } else {
+            TagLib::FileRef f((pathToFolder + "/" + track).c_str());
+            TagLib::Tag* tag = f.tag();
+            title = tag ? tag->title().to8Bit(true) : "unknown";
+            artist = tag ? tag->artist().to8Bit(true) : "unknown";
+            fullPaths[i] = pathToFolder + "/" + track;
+        }
+        formatedItems[i] = title + " - " + artist;
+    }
+
+    list = formatedItems;
+}

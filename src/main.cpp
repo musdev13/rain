@@ -1,16 +1,17 @@
+#include "mus.h/atomic_vars.hpp"
 #include "mus.h/filefs.hpp"
 #include "mus.h/panels/panels.hpp"
-// #include "mus.h/spotify/getTrackInfo.hpp"
+#include "mus.h/spotify/getTrackInfo.hpp"
 #include "mus.h/spotify/getTrack.hpp"
 
 int main(int argc, char* argv[]){
-    std::vector<std::string> files = getFiles(argv[1]);
+    pathToFolder = argv[1];
     // std::string artist;
     // std::string title;
     // getTrackInfo("2C1NoGfuZRlp5Cz7AQ6gEt", title, artist);
     // system(("notify-send \""+ title +" - "+artist+"\"").c_str());
     // getTrack("2C1NoGfuZRlp5Cz7AQ6gEt","file.mp3");
-    
+
     mpv_handle* mpv = mpv_create();
     // mpv_request_log_messages(mpv, "v");
     // mpv_set_option_string(mpv, "no-video", "yes");
@@ -27,21 +28,12 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    
-    for (const auto& file : files) {
-        fs::create_directories(fs::path(fs::path(getenv("HOME"))/".cache/rain/test").parent_path());
-        
-        if (file.find("@rain:spotify\\") != std::string::npos){
-            // removeAll(ffile,"@rain:spotify\\");
-            // system(("notify-send \""+ffile+"\"").c_str());
-            fullPaths.push_back(file);
-            
-        } else fullPaths.push_back(std::string(argv[1]) + "/" + file);
-    }
+
+    refreshList();
     // for (auto file:fullPaths){
     //     std::cout << file << std::endl;
     // }
-    
+
 
     Menuctl menuctl;
     auto screen = ScreenInteractive::TerminalOutput();
@@ -50,7 +42,7 @@ int main(int argc, char* argv[]){
     panels.push_back(std::make_unique<Blank>());
     panels.push_back(std::make_unique<Settings>());
     panels.push_back(std::make_unique<Blank>());
-    panels.push_back(std::make_unique<MediaList>(files, mpv, argv[1]));
+    panels.push_back(std::make_unique<MediaList>(mpv));
     panels.push_back(std::make_unique<playerCtl>(mpv,screen));
     panels.push_back(std::make_unique<HelpPanel>());
 
@@ -61,7 +53,7 @@ int main(int argc, char* argv[]){
 
 
     auto layout = Container::Vertical({});
-    
+
 
     auto renderer = Renderer(layout, [&]{
         layout->DetachAllChildren();
@@ -123,11 +115,15 @@ int main(int argc, char* argv[]){
             infoPanel ? infoPanel = false : infoPanel = true;
             return true;
         }
+        if (event == Event::CtrlR){
+            refreshList();
+            return true;
+        }
         return false;
     });
 
     screen.Loop(app);
-    
+
     running = false;
     eventThread.join();
     mpv_terminate_destroy(mpv);

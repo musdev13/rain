@@ -9,3 +9,6 @@ std::atomic<bool> infoPanel(true);
 std::atomic<bool> updateList(false);
 
 std::vector<std::string> fullPaths;
+std::string pathToFolder;
+std::vector<std::string> files;
+std::vector<std::string> formatedItems;

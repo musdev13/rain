@@ -6,6 +6,9 @@
 #include <set>
 #include <algorithm>
 #include <filesystem>
+#include "atomic_vars.hpp"
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
 
 namespace fs = std::filesystem;
 
@@ -20,3 +23,5 @@ void writePlaylist(const fs::path& playlistPath, const std::vector<std::string>&
 std::vector<std::string> getFiles(fs::path folderPath);
 
 extern std::string cacheFolder;
+
+void refreshList();
