@@ -7,9 +7,10 @@ ftxui::Element HelpPanel::getElement(){
         separator(),
         vbox({
             ftxui::text(" Navigation info: "),
-            ftxui::text(" / - focus on search bar "),
+            ftxui::text(" Ctrl+F - focus on search bar "),
             ftxui::text(" Ctrl+S - focus on play button "),
             ftxui::text(" Ctrl+←→ - change track pos "),
+            ftxui::text(" Ctrl+R - refresh track list "),
             ftxui::text(""),
             ftxui::text(" Ctrl+B - show/hide this panel "),
             ftxui::text(" Ctrl+Q - quit ")

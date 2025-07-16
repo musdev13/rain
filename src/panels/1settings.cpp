@@ -1,12 +1,28 @@
 #include "../mus.h/panels/1settings.hpp"
 
 Settings::Settings(){
-    button = Button("Nothing :3", [] {}, btnStyle());
-    layout = Container::Horizontal({ button });
+    ftxui::InputOption spotifyInputOptions;
+    spotifyInputOptions.placeholder = "Spotify Track URL...";
+    spotifyInput = Input(&spotifyUrl, spotifyInputOptions);
+    spotifyInputBlocked = CatchEvent(spotifyInput, [this](Event event) {
+        if (event == Event::Return){
+            // Here will be addSpotifyTrack();
+            addSpotifyTrack(spotifyUrl);
+            refreshList();
+            spotifyUrl = "";
+            return true;
+        }
+        return false;
+    });
+
+
+    layout = Container::Horizontal({
+        spotifyInputBlocked
+    });
 }
 
 ftxui::Element Settings::getElement() {
-    return hbox({
-        button->Render(),
+    return vbox({
+        spotifyInput->Render()
     });
 }

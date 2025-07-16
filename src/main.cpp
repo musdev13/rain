@@ -72,7 +72,7 @@ int main(int argc, char* argv[]){
             // здесь будет само меню
             hbox({
                 panels[menuctl.getID()]->getElement(),
-                infoPanel ? (panels[5]->getElement()):(filler())
+                menuctl.getID()!=1 ? (infoPanel ? (panels[5]->getElement()):(filler())):(filler())
             }) | flex,
             separator(),
             panels[4]->getElement(),
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]){
     panels[0]->getLayout()->ChildAt(1)->TakeFocus();
 
     auto app = CatchEvent(renderer, [&](Event event) {
-        if (event == Event::Character('/')) {
+        if (event == Event::CtrlF) {
             header->getInputComponent()->TakeFocus();
             return true;
         }

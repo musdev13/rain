@@ -2,6 +2,18 @@
 #include "mus.h/filefs.hpp"
 #include "mus.h/atomic_vars.hpp"
 
+void insertFirstLine(const std::string& path, const std::string& newLine) {
+    std::ifstream inFile(path);
+    if (!inFile) return;
+
+    std::stringstream buffer;
+    buffer << newLine << "\n" << inFile.rdbuf();
+    inFile.close();
+
+    std::ofstream outFile(path, std::ios::trunc);
+    outFile << buffer.str();
+}
+
 std::vector<std::string> readInf(const std::string& path) {
     std::ifstream file(path);
     std::vector<std::string> lines;
