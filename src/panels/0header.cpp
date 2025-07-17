@@ -3,9 +3,9 @@
 void search(std::string* inputContent){
     // system(("notify-send \"" + list[0] + "\"").c_str());
     for (int i =0; i<list.size();i++){
-        // system(("notify-send " + std::to_string(i)).c_str()); 
-        if (std::string(list[i]).find(*inputContent) != std::string::npos) { 
-            selected_global = i; 
+        // system(("notify-send " + std::to_string(i)).c_str());
+        if (std::string(list[i]).find(*inputContent) != std::string::npos) {
+            selected_global = i;
             // system(("notify-send " + std::to_string(i)).c_str());
             *inputContent = "";
             break;
@@ -15,7 +15,7 @@ void search(std::string* inputContent){
 
 Header::Header(Menuctl* menuctl, ScreenInteractive* screen){
     prevMenuID = 2;
-    button1 = Button("", [menuctl, screen, this] {
+    button1 = Button("", [menuctl, screen, this] {
         int id = menuctl->getID();
         if (id == 1){
             menuctl->setID(prevMenuID);
@@ -31,7 +31,7 @@ Header::Header(Menuctl* menuctl, ScreenInteractive* screen){
     }, btnHeaderStyle());
     ftxui::InputOption options;
     options.placeholder = "Search...";
-    
+
     input = Input(&inputContent, options);
 
     inputBlocked = CatchEvent(input, [this](Event event) {

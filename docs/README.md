@@ -23,7 +23,7 @@
 
 <div align="center", style="border: 3px solid white; border-radius:15px;padding:10px 20px">
     <h1 align="center">About</h1>
-    <p><b>Rain🌧️ — is a TUI player based on mpv</b>. It can play locally downloaded tracks in a folder, but tracks from Spotify🎧 and later SoundCloud☁️ will be added soon!</p>
+    <p><b>Rain🌧️ — is a TUI player based on mpv</b>. It can play locally downloaded tracks in a folder and Spotify tracks, but later SoundCloud☁️ will be added soon!</p>
     <p>And... of course, it's absolutely free!💖</p>
 
 
@@ -37,11 +37,13 @@
 | Play/Pause track     | ✅  |                                             It was not hard |
 | Change track volume  | ✅  |                                It's very usefull for me btw |
 | Change track pos     | ✅  |                   Idk, it's not hard to made like first two |
-| Search track         | ✅  |             It was SO hard to make this at the first moment |
-| Spotify tracks       | 🛠️  |                                      it's done, but bugs... |
+| Search track in list | ✅  |             It was SO hard to make this at the first moment |
+| Local tracks         | ✅  |                         something like .mp3 can be playable |
+| Spotify tracks       | ✅  |                                      it's done, but bugs... |
+| Track caching        | ✅  |                                Spotify tracks can be cached |
 | SoundCloud tracks    | ❌  |                               It will be in the soon future |
 | Youtube Music tracks | ❌  |                                     Yeah, it's a great idea |
-| Offline playback     | ❌  |     I need to make Spotify and SoundCloud tracks work first |
+| Search Tracks online | ❌  |                                       I wanna this feauture |
 
 </div>
 </div>
@@ -50,6 +52,8 @@
 <h1>Build</h1>
 
 > Yeah,Rain does not have a binary version yet, but if you really want, I can upload Rain on [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) or [GitHub Releases](https://github.com/musdev13/rain/releases)
+
+> Also, there is no Windows version of Rain yet, but the key word here is “yet”
 
 <h2>Dependencies</h2>
 <p>I use arch btw, so i can just leave a <b>list of packages</b> you need to install at this moment:</p>
@@ -60,9 +64,9 @@
     <li>g++</li>
     <li>make</li>
     <li><a href="https://github.com/ArthurSonzogni/FTXUI">ftxui</a></li>
-    <li>libmpv</li>
-    <li>tagLib</li>
-    <li>curl (for spotify branch)</li>
+    <li>mpv</li>
+    <li>taglib</li>
+    <li>curl</li>
 </ul>
 
 > Tell me pls if i forgot to add some library to list
@@ -74,11 +78,7 @@ first you need to **clone repo** and **cd into Rain directory**:
 git clone --depth 1 https://github.com/musdev13/rain.git
 cd rain
 ```
-or if you want to build a **spotify branch**:
-```sh
-git clone --branch spotify --depth 1 https://github.com/musdev13/rain.git
-cd rain
-```
+
 Now you can **build Rain using make**:
 ```sh
 make
@@ -139,8 +139,8 @@ on startup, **a panel that explains the hotkeys will open on the right side** of
 **here's the hotkeys:**
 
 | hotkey |                       action |
-|:-------|-----------------------------:|
-| /      |          focus on search bar |
+|:-------|:----------------------------:|
+| Ctrl+F |          focus on search bar |
 | Ctrl+S | focus on pause/resume button |
 | Ctrl+↔ |        change track position |
 | Ctrl+B |         show/hide help panel |

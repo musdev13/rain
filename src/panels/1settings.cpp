@@ -7,8 +7,9 @@ Settings::Settings(){
     spotifyInputBlocked = CatchEvent(spotifyInput, [this](Event event) {
         if (event == Event::Return){
             // Here will be addSpotifyTrack();
-            addSpotifyTrack(spotifyUrl);
-            refreshList();
+            if (spotifyUrl.find("open.spotify.com/track/") != std::string::npos)
+                {addSpotifyTrack(spotifyUrl);
+                refreshList();}
             spotifyUrl = "";
             return true;
         }

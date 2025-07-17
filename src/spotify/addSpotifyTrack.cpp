@@ -1,7 +1,7 @@
 #include "../mus.h/spotify/addSpotifyTrack.hpp"
 
 std::string extractSpotifyID(const std::string& url) {
-    const std::string prefix = "https://open.spotify.com/track/";
+    const std::string prefix = "open.spotify.com/track/";
     size_t start = url.find(prefix);
     if (start == std::string::npos) return "";
 
