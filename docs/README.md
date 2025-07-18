@@ -119,7 +119,7 @@ If you later add the track to a folder, Rain will **automatically add the file t
 
 ---
 
-if you'r using rain from **spotify branch**, you can add spotify track into **playlist file** by adding this line:
+You can add spotify track into **playlist file** by adding this line:
 ```playlist
 @rain:spotify\TrackID
 ```
