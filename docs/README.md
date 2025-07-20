@@ -23,7 +23,7 @@
 
 <div align="center", style="border: 3px solid white; border-radius:15px;padding:10px 20px">
     <h1 align="center">About</h1>
-    <p><b>Rain🌧️ — is a TUI player based on mpv</b>. It can play locally downloaded tracks in a folder and Spotify tracks, but later SoundCloud☁️ will be added soon!</p>
+    <p><b>Rain🌧️ — is a TUI player based on mpv</b>. It can play locally downloaded tracks in a folder and Spotify/Soundcloud☁️ tracks, but later YouTube Music will be added soon!</p>
     <p>And... of course, it's absolutely free!💖</p>
 
 
