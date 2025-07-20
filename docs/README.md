@@ -34,16 +34,18 @@
 
 | Feauture             |done?|                                                  descibtion |
 |:---------------------|:---:|------------------------------------------------------------:|
-| Play/Pause track     | ✅  |                                             It was not hard |
-| Change track volume  | ✅  |                                It's very usefull for me btw |
-| Change track pos     | ✅  |                   Idk, it's not hard to made like first two |
-| Search track in list | ✅  |             It was SO hard to make this at the first moment |
-| Local tracks         | ✅  |                         something like .mp3 can be playable |
-| Spotify tracks       | ✅  |                                      it's done, but bugs... |
-| Track caching        | ✅  |                                Spotify tracks can be cached |
-| SoundCloud tracks    | ❌  |                               It will be in the soon future |
-| Youtube Music tracks | ❌  |                                     Yeah, it's a great idea |
-| Search Tracks online | ❌  |                                       I wanna this feauture |
+| Play/Pause track     | ✅  |                                                Pause/Resume |
+| Change track volume  | ✅  |                                             +/- track voume |
+| Change track pos     | ✅  |                                     Changing track position |
+| Search track in list | ✅  |                          Simple track searching in playlist |
+| Local tracks         | ✅  |                         Something like .mp3 can be playable |
+| Spotify tracks       | ✅  |                           Tracks from Spotify(not directly) |
+| Track caching        | ✅  |           Online tracks can be cached for offline listening |
+| SoundCloud tracks    | ✅  |                                      Tracks from SoundCloud |
+| YouTube Music tracks | 🛠️  |                                    Tracks from YouTube Music|
+| Search Tracks online | ❌  |                         Search online tracks by name in app |
+| Import from playlist | ❌  | Import tracks from playlists from Spotify, Soundcloud, etc. |
+| Windows Version      | ❌  |                          Source code and Binary for Windows |
 
 </div>
 </div>
@@ -51,7 +53,7 @@
 <div align="center" style="border: 3px solid white; border-radius:15px;padding:10px 20px;margin-top:15px">
 <h1>Build</h1>
 
-> Yeah,Rain does not have a binary version yet, but if you really want, I can upload Rain on [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) or [GitHub Releases](https://github.com/musdev13/rain/releases)
+> Yeah, Rain does not have a binary version yet, but if you want, I'll upload Rain on [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) and [GitHub Releases](https://github.com/musdev13/rain/releases) at release
 
 > Also, there is no Windows version of Rain yet, but the key word here is “yet”
 
@@ -64,7 +66,7 @@
     <li>g++</li>
     <li>make</li>
     <li><a href="https://github.com/ArthurSonzogni/FTXUI">ftxui</a></li>
-    <li>mpv</li>
+    <li>libmpv</li>
     <li>taglib</li>
     <li>curl</li>
 </ul>
@@ -83,7 +85,10 @@ Now you can **build Rain using make**:
 ```sh
 make
 ```
-Now you can find **rain binary in the build folder**
+Now you can **install Rain**:
+```sh
+sudo make install
+```
 
 ---
 > you can install rain binary manually into /usr/bin if you want using cp or mv and chmod
@@ -108,7 +113,6 @@ You need to **run rain** and tell the **path of folder** that contain your track
 rain /path/to/playlist/folder
 ```
 
----
 **Rain will create a playlist file** in the folder, which will **contain a list of the tracks** in the folder.
 
 You **can change the track order** to your own **in this file**.
@@ -119,6 +123,14 @@ If you later add the track to a folder, Rain will **automatically add the file t
 
 ---
 
+<h2>Online Tracks</h2>
+
+You can add **online tracks**(Spotify/Soundcloud, etc...) by url **at top-left corner**.
+
+Or you can add track **manualy in playlist file**.
+
+<h3>Spotify Tracks</h3>
+
 You can add spotify track into **playlist file** by adding this line:
 ```playlist
 @rain:spotify\TrackID
@@ -126,10 +138,25 @@ You can add spotify track into **playlist file** by adding this line:
 
 **example**:
 
-<p>https://open.spotify.com/track/<b>2GlV9w8oHSQdiPPk9lxqlp</b>?si=e284376a9c5448d7:</p>
+<p>https://open.spotify.com/track/<b>2GlV9w8oHSQdiPPk9lxqlp</b>?si=...</p>
 
 ```playlist
 @rain:spotify\2GlV9w8oHSQdiPPk9lxqlp
+```
+
+<h3>Soundcloud Tracks</h3>
+
+You can add soundcloud track into **playlist file** by adding this line:
+```playlist
+@rain:soundcloud\arist/track
+```
+
+**example**:
+
+<p>https://soundcloud.com/<b>hdhdhd-hdhdhdh-796366279/mashinistam</b>?si=...</p>
+
+```playlist
+@rain:soundcloud\hdhdhd-hdhdhdh-796366279/mashinistam
 ```
 
 <h2>Navigation</h2>

@@ -25,4 +25,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 run:
-	$(TARGET) /home/$(shell whoami)/Music/iknow
+	$(TARGET) /home/$(shell whoami)/Music/tk
+
+install:
+	install -Dm755 $(TARGET) /usr/bin/rain
