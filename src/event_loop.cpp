@@ -6,9 +6,23 @@
 
 void preload_tracks() {
     while (running) {
-        for (size_t i = 0; i < fullPaths.size(); ++i) {
-            if (fullPaths[i].find("@rain:spotify\\") != std::string::npos) {
-                std::string id = fullPaths[i];
+        size_t size;
+
+        {
+            std::lock_guard<std::mutex> lock(data_mutex);
+            size = fullPaths.size();
+        }
+
+        for (size_t i = 0; i < size; ++i) {
+            std::string path;
+
+            {
+                std::lock_guard<std::mutex> lock(data_mutex);
+                path = fullPaths[i];
+            }
+
+            if (path.find("@rain:spotify\\") != std::string::npos) {
+                std::string id = path;
                 removeAll(id, "@rain:spotify\\");
                 std::string mp3_path = cacheFolder + id + ".mp3";
                 std::string info_path = cacheFolder + id + ".infosp";
@@ -22,17 +36,45 @@ void preload_tracks() {
                         fs::rename(cacheFolder + id + ".dwnld", mp3_path);
                         writeFile(info_path, title + "\n" + artist);
 
-                        list[i] = title + " - " + artist;
-
-                        fullPaths[i] = mp3_path;
+                        std::lock_guard<std::mutex> lock(data_mutex);
+                        if (i < list.size()) list[i] = title + " - " + artist;
+                        if (i < fullPaths.size()) fullPaths[i] = mp3_path;
                     }
                 } else {
-                    fullPaths[i] = mp3_path;
+                    std::lock_guard<std::mutex> lock(data_mutex);
+                    if (i < fullPaths.size()) fullPaths[i] = mp3_path;
+                }
+            }
+            else if (path.find("@rain:soundcloud\\") != std::string::npos) {
+                std::string id = path;
+                removeAll(id, "@rain:soundcloud\\");
+                std::string fileID = id;
+                for (char& c : fileID) if (c == '/') c = '.';
+                std::string mp3_path = cacheFolder + fileID + ".mp3";
+                std::string info_path = cacheFolder + fileID + ".infosp";
+
+                if (!fs::exists(mp3_path) || !fs::exists(info_path)) {
+                    std::string title, artist;
+                    getSCTrackInfo(SC_clientID, id, title, artist);
+                    getSCTrack(SC_clientID, id, cacheFolder + fileID + ".dwnld");
+
+                    if (fs::exists(cacheFolder + fileID + ".dwnld")) {
+                        fs::rename(cacheFolder + fileID + ".dwnld", mp3_path);
+                        writeFile(info_path, title + "\n" + artist);
+
+                        std::lock_guard<std::mutex> lock(data_mutex);
+                        if (i < list.size()) list[i] = title + " - " + artist;
+                        if (i < fullPaths.size()) fullPaths[i] = mp3_path;
+                    }
+                } else {
+                    std::lock_guard<std::mutex> lock(data_mutex);
+                    if (i < fullPaths.size()) fullPaths[i] = mp3_path;
                 }
             }
         }
     }
 }
+
 
 void event_loop(mpv_handle* mpv) {
     std::thread preloadThread(preload_tracks);
@@ -48,11 +90,23 @@ void event_loop(mpv_handle* mpv) {
                 continue;
             }
 
-            current = (current + 1) % fullPaths.size();
+            size_t nextTrack = 0;
+            {
+                std::lock_guard<std::mutex> lock(data_mutex);
+                if (!fullPaths.empty())
+                    nextTrack = (current + 1) % fullPaths.size();
+            }
+
+            current = nextTrack;
             track = current;
             selected_global = static_cast<int>(current);
 
-            std::string path = fullPaths[current];
+            std::string path;
+            {
+                std::lock_guard<std::mutex> lock(data_mutex);
+                path = fullPaths[current];
+            }
+
             if (fs::exists(path)) {
                 const char* cmd[] = {"loadfile", path.c_str(), "replace", nullptr};
                 mpv_command(mpv, cmd);

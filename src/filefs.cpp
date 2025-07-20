@@ -1,6 +1,20 @@
 // filefs.cpp
 #include "mus.h/filefs.hpp"
 #include "mus.h/atomic_vars.hpp"
+#include <string>
+
+void debug(const std::string str){system(("notify-send \""+str+"\"").c_str());}
+
+std::string readFirstLine(const std::string& filename){
+    std::ifstream file(filename);
+    std::string line;
+
+    if (file.is_open()){
+        std::getline(file, line);
+    }
+
+    return line;
+}
 
 void insertFirstLine(const std::string& path, const std::string& newLine) {
     std::ifstream inFile(path);
@@ -89,21 +103,29 @@ std::vector<std::string> getFiles(fs::path folderPath){
     return playlist;
 }
 
-std::string cacheFolder = std::string(fs::path(getenv("HOME"))) + "/.cache/rain/";
+std::string cacheFolder = [](){
+    const char* home = getenv("HOME");
+    if (!home) {
+        system("notify-send 'HOME not set!'");
+        std::exit(1);
+    }
+    return std::string(home) + "/.cache/rain/";
+}();
 
-void refreshList(){
+void refreshList() {
+    std::lock_guard<std::mutex> lock(data_mutex);
+
     files = getFiles(pathToFolder);
+    fullPaths.clear();
+
+    fs::create_directories(fs::path(fs::path(getenv("HOME")) / ".cache/rain/test").parent_path());
 
     for (const auto& file : files) {
-        fullPaths.clear();
-        fs::create_directories(fs::path(fs::path(getenv("HOME"))/".cache/rain/test").parent_path());
-
-        if (file.find("@rain:spotify\\") != std::string::npos){
-            // removeAll(ffile,"@rain:spotify\\");
-            // system(("notify-send \""+ffile+"\"").c_str());
+        if (file.find("@rain:spotify\\") != std::string::npos || file.find("@rain:soundcloud\\") != std::string::npos) {
             fullPaths.push_back(file);
-
-        } else fullPaths.push_back(std::string(pathToFolder + "/" + file));
+        } else {
+            fullPaths.push_back(std::string(pathToFolder + "/" + file));
+        }
     }
 
     formatedItems.clear();
@@ -114,9 +136,15 @@ void refreshList(){
         std::string track = files[i];
         std::string title, artist;
 
-        if (track.find("@rain:spotify\\") != std::string::npos) {
+        if (track.find("@rain:spotify\\") != std::string::npos || track.find("@rain:soundcloud\\") != std::string::npos) {
             std::string id = track;
-            removeAll(id, "@rain:spotify\\");
+            if (track.find("@rain:spotify\\") != std::string::npos) {
+                removeAll(id, "@rain:spotify\\");
+            } else if (track.find("@rain:soundcloud\\") != std::string::npos) {
+                removeAll(id, "@rain:soundcloud\\");
+                for (char& c : id) if (c == '/') c = '.';
+            }
+
             std::string mp3_path = cacheFolder + id + ".mp3";
             std::string info_path = cacheFolder + id + ".infosp";
 
@@ -128,7 +156,7 @@ void refreshList(){
             } else {
                 title = "loading";
                 artist = "loading";
-                fullPaths[i] = track; // временно, до загрузки
+                fullPaths[i] = track;
             }
         } else {
             TagLib::FileRef f((pathToFolder + "/" + track).c_str());
@@ -137,6 +165,7 @@ void refreshList(){
             artist = tag ? tag->artist().to8Bit(true) : "unknown";
             fullPaths[i] = pathToFolder + "/" + track;
         }
+
         formatedItems[i] = title + " - " + artist;
     }
 

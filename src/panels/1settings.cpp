@@ -1,16 +1,17 @@
 #include "../mus.h/panels/1settings.hpp"
 
 Settings::Settings(){
-    ftxui::InputOption spotifyInputOptions;
-    spotifyInputOptions.placeholder = "Spotify Track URL...";
-    spotifyInput = Input(&spotifyUrl, spotifyInputOptions);
-    spotifyInputBlocked = CatchEvent(spotifyInput, [this](Event event) {
+    ftxui::InputOption inputOptions;
+    inputOptions.placeholder = "Spotify/Soundcloud Track URL...";
+    input = Input(&url, inputOptions);
+    inputBlocked = CatchEvent(input, [this](Event event) {
         if (event == Event::Return){
-            // Here will be addSpotifyTrack();
-            if (spotifyUrl.find("open.spotify.com/track/") != std::string::npos)
-                {addSpotifyTrack(spotifyUrl);
-                refreshList();}
-            spotifyUrl = "";
+            if (url.find("open.spotify.com/track/") != std::string::npos)
+                addSpotifyTrack(url);
+            else if (url.find("soundcloud.com/") != std::string::npos)
+                addSoundcloudTrack(url);
+            refreshList();
+            url = "";
             return true;
         }
         return false;
@@ -18,12 +19,12 @@ Settings::Settings(){
 
 
     layout = Container::Horizontal({
-        spotifyInputBlocked
+        inputBlocked
     });
 }
 
 ftxui::Element Settings::getElement() {
     return vbox({
-        spotifyInput->Render()
+        input->Render()
     });
 }

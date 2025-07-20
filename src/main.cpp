@@ -1,8 +1,6 @@
 #include "mus.h/atomic_vars.hpp"
 #include "mus.h/filefs.hpp"
 #include "mus.h/panels/panels.hpp"
-#include "mus.h/spotify/getTrackInfo.hpp"
-#include "mus.h/spotify/getTrack.hpp"
 
 int main(int argc, char* argv[]){
     pathToFolder = argv[1];
@@ -28,6 +26,8 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
+    SC_clientID = readFirstLine((fs::path(getenv("HOME")) / ".config/rain/SCCID").string());
+    // system(("notify-send \""+SC_clientID+"\"").c_str());
 
     refreshList();
     // for (auto file:fullPaths){
@@ -87,7 +87,6 @@ int main(int argc, char* argv[]){
             return true;
         }
         if (event == Event::CtrlQ) {
-            screen.Exit();
             exit(0);
         }
         if (event == Event::CtrlS){

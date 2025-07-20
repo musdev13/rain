@@ -7,6 +7,8 @@
 #include <cmath>
 #include <fstream>
 #include <filesystem>
+#include <nlohmann/detail/value_t.hpp>
+#include <vector>
 
 using namespace ftxui;
 namespace fs = std::filesystem;
@@ -40,7 +42,7 @@ playerCtl::playerCtl(mpv_handle* mpvv, ScreenInteractive& screenr) {
     artist = "Unknown";
     volume = "n";
 
-    config_path = (fs::path(getenv("HOME")) / ".config/rain/volume.cfg").string();
+    // config_path = (fs::path(getenv("HOME")) / ".config/rain/volume.cfg").string();
     fs::create_directories(fs::path(config_path).parent_path());
 
     double initial_volume = load_volume();
@@ -77,16 +79,42 @@ playerCtl::playerCtl(mpv_handle* mpvv, ScreenInteractive& screenr) {
     updateThread = std::thread([this]() {
         std::string last_title, last_artist;
         while (active) {
-            const char* t = mpv_get_property_string(mpv, "media-title");
-            const char* raw_artist = mpv_get_property_string(mpv, "metadata/by-key/Artist");
-            if (!raw_artist) raw_artist = mpv_get_property_string(mpv, "metadata/by-key/artist");
-            if (!raw_artist) raw_artist = mpv_get_property_string(mpv, "metadata/by-key/ARTIST");
+            std::string t_str;
+            std::string raw_artist_str;
+            bool cached = false;
 
-            std::string new_title = t ? t : "Unknown";
-            std::string new_artist = raw_artist ? raw_artist : "Unknown";
+            const char* path = nullptr;
+            if (mpv_get_property(mpv, "path", MPV_FORMAT_STRING, &path) >= 0 && path) {
+                if (std::string(path).find(cacheFolder) != std::string::npos) {
+                    std::string path_str = path;
 
-            if (t) mpv_free((void*)t);
-            if (raw_artist) mpv_free((void*)raw_artist);
+                    if (path_str.size() >= 3 && path_str.substr(path_str.size() - 3) == "mp3") {
+                        path_str.replace(path_str.size() - 3, 3, "infosp");
+                    }
+
+                    std::vector<std::string> fileinf = readInf(path_str);
+                    if (fileinf.size() > 0) t_str = fileinf[0];
+                    if (fileinf.size() > 1) raw_artist_str = fileinf[1];
+                    cached = true;
+                } else {
+                    const char* t = mpv_get_property_string(mpv, "media-title");
+                    const char* raw = mpv_get_property_string(mpv, "metadata/by-key/Artist");
+                    if (!raw) raw = mpv_get_property_string(mpv, "metadata/by-key/artist");
+                    if (!raw) raw = mpv_get_property_string(mpv, "metadata/by-key/ARTIST");
+
+                    if (t) {
+                        t_str = t;
+                        mpv_free((void*)t);
+                    }
+                    if (raw) {
+                        raw_artist_str = raw;
+                        mpv_free((void*)raw);
+                    }
+                }
+            }
+
+            std::string new_title = !t_str.empty() ? t_str : "Unknown";
+            std::string new_artist = !raw_artist_str.empty() ? raw_artist_str : "Unknown";
 
             double time_pos = 0;
             double dur = 0;

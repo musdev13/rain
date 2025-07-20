@@ -13,11 +13,11 @@ private:
     ScreenInteractive* screen;
     std::thread updateThread;
     std::atomic<bool> active{true};
-    std::string config_path = std::string(std::getenv("HOME")) + "/.config/mtui/config.cfg";
+    std::string config_path = (fs::path(getenv("HOME")) / ".config/rain/volume.cfg").string();
 
     bool paused;
     std::string icon = "";
-    
+
     std::string title;
     std::string artist;
     std::string position = "0:00";

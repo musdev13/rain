@@ -12,3 +12,6 @@ std::vector<std::string> fullPaths;
 std::string pathToFolder;
 std::vector<std::string> files;
 std::vector<std::string> formatedItems;
+
+std::string SC_clientID;
+std::mutex data_mutex;

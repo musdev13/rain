@@ -12,6 +12,9 @@
 
 namespace fs = std::filesystem;
 
+void debug(const std::string str);
+
+std::string readFirstLine(const std::string& filename);
 void insertFirstLine(const std::string& path, const std::string& newLine);
 std::vector<std::string> readInf(const std::string& path);
 void writeFile(const std::string& path, const std::string& content);

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <mutex>
 
 
 extern std::atomic<bool> running;
@@ -16,3 +17,5 @@ extern std::vector<std::string> fullPaths;
 extern std::string pathToFolder;
 extern std::vector<std::string> files;
 extern std::vector<std::string> formatedItems;
+extern std::string SC_clientID;
+extern std::mutex data_mutex;
