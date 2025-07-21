@@ -147,6 +147,8 @@ You can add spotify track into **playlist file** by adding this line:
 
 <h3>Soundcloud Tracks</h3>
 
+**YOU NEED TO FIND YOUR ClientID AND PUT IT IN `~/.config/rain/SCCID`**
+
 You can add soundcloud track into **playlist file** by adding this line:
 ```playlist
 @rain:soundcloud\arist/track
