@@ -23,7 +23,7 @@
 
 <div align="center", style="border: 3px solid white; border-radius:15px;padding:10px 20px">
     <h1 align="center">About</h1>
-    <p><b>Rain🌧️ — is a TUI player based on mpv</b>. It can play locally downloaded tracks in a folder and Spotify/Soundcloud☁️ tracks, but later YouTube Music will be added soon!</p>
+    <p><b>Rain🌧️ — is a TUI player based on mpv</b>. It can play locally downloaded tracks in a folder and Spotify/Soundcloud☁️/YTMusic tracks</p>
     <p>And... of course, it's absolutely free!💖</p>
 
 
@@ -42,8 +42,8 @@
 | Spotify tracks       | ✅  |                           Tracks from Spotify(not directly) |
 | Track caching        | ✅  |           Online tracks can be cached for offline listening |
 | SoundCloud tracks    | ✅  |                                      Tracks from SoundCloud |
-| YouTube Music tracks | 🛠️  |                                    Tracks from YouTube Music|
-| Search Tracks online | ❌  |                         Search online tracks by name in app |
+| YouTube Music tracks | ✅  |                                    Tracks from YouTube Music|
+| Search Tracks online | 🛠️  |                         Search online tracks by name in app |
 | Import from playlist | ❌  | Import tracks from playlists from Spotify, Soundcloud, etc. |
 | Windows Version      | ❌  |                          Source code and Binary for Windows |
 
@@ -69,6 +69,7 @@
     <li>libmpv</li>
     <li>taglib</li>
     <li>curl</li>
+    <li>yt-dlp</li>
 </ul>
 
 > Tell me pls if i forgot to add some library to list
@@ -117,7 +118,7 @@ rain /path/to/playlist/folder
 
 You **can change the track order** to your own **in this file**.
 
-> changes will be applied after restart
+> changes will be applied after refresh
 
 If you later add the track to a folder, Rain will **automatically add the file to the list** on startup
 
@@ -159,6 +160,21 @@ You can add soundcloud track into **playlist file** by adding this line:
 @rain:soundcloud\hdhdhd-hdhdhdh-796366279/mashinistam
 ```
 
+<h3>YouTube Music Tracks</h3>
+
+You can add YTMusic track into **playlist file** by adding this line:
+```playlist
+@rain:ytm\trackid
+```
+
+**example**:
+
+<p>https://music.youtube.com/watch?v=<b>9nd5SThcLWE</b>&si=...</p>
+
+```playlist
+@rain:ytm\9nd5SThcLWE
+```
+
 <h2>Navigation</h2>
 
 on startup, **a panel that explains the hotkeys will open on the right side** of the window
@@ -170,6 +186,7 @@ on startup, **a panel that explains the hotkeys will open on the right side** of
 | Ctrl+F |          focus on search bar |
 | Ctrl+S | focus on pause/resume button |
 | Ctrl+↔ |        change track position |
+| Ctrl+R |           refresh track list |
 | Ctrl+B |         show/hide help panel |
 | Ctrl+Q |                         quit |
 
