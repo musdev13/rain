@@ -8,6 +8,7 @@
 #include "spotify/getTrackInfo.hpp"
 #include "spotify/getTrack.hpp"
 #include "soundcloud/soundcloud.hpp"
+#include "ytm/ytm.hpp"
 
 
 void event_loop(mpv_handle* mpv);

@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Wextra -I./src
 LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv -ltag -lcurl
 
-SRC_DIRS := src src/panels src/buttonOptions src/spotify src/soundcloud
+SRC_DIRS := src src/panels src/buttonOptions src/spotify src/soundcloud src/ytm
 BUILD_DIR := build
 TARGET := $(BUILD_DIR)/rain
 
@@ -25,7 +25,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 run:
-	$(TARGET) /home/$(shell whoami)/Music/tk
+	$(TARGET) /home/$(shell whoami)/Music/iknow
 
 install:
 	install -Dm755 $(TARGET) /usr/bin/rain

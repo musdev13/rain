@@ -10,6 +10,8 @@ Settings::Settings(){
                 addSpotifyTrack(url);
             else if (url.find("soundcloud.com/") != std::string::npos)
                 addSoundcloudTrack(url);
+            else if (url.find("music.youtube.com/") != std::string::npos)
+                addYTMTrack(url);
             refreshList();
             url = "";
             return true;

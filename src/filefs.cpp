@@ -121,7 +121,7 @@ void refreshList() {
     fs::create_directories(fs::path(fs::path(getenv("HOME")) / ".cache/rain/test").parent_path());
 
     for (const auto& file : files) {
-        if (file.find("@rain:spotify\\") != std::string::npos || file.find("@rain:soundcloud\\") != std::string::npos) {
+        if (file.find("@rain:spotify\\") != std::string::npos || file.find("@rain:soundcloud\\") != std::string::npos || file.find("@rain:ytm\\") != std::string::npos) {
             fullPaths.push_back(file);
         } else {
             fullPaths.push_back(std::string(pathToFolder + "/" + file));
@@ -136,14 +136,17 @@ void refreshList() {
         std::string track = files[i];
         std::string title, artist;
 
-        if (track.find("@rain:spotify\\") != std::string::npos || track.find("@rain:soundcloud\\") != std::string::npos) {
+        if (track.find("@rain:spotify\\") != std::string::npos || track.find("@rain:soundcloud\\") != std::string::npos || track.find("@rain:ytm\\") != std::string::npos) {
             std::string id = track;
             if (track.find("@rain:spotify\\") != std::string::npos) {
                 removeAll(id, "@rain:spotify\\");
             } else if (track.find("@rain:soundcloud\\") != std::string::npos) {
                 removeAll(id, "@rain:soundcloud\\");
                 for (char& c : id) if (c == '/') c = '.';
+            } else if (track.find("@rain:ytm\\") != std::string::npos) {
+                removeAll(id, "@rain:ytm\\");
             }
+
 
             std::string mp3_path = cacheFolder + id + ".mp3";
             std::string info_path = cacheFolder + id + ".infosp";

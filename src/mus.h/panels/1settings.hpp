@@ -4,6 +4,7 @@
 #include <ftxui/component/event.hpp>
 #include "../spotify/addSpotifyTrack.hpp"
 #include "../soundcloud/soundcloud.hpp"
+#include "../ytm/ytm.hpp"
 
 class Settings : public panelBase {
 private:

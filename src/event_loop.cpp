@@ -70,6 +70,28 @@ void preload_tracks() {
                     std::lock_guard<std::mutex> lock(data_mutex);
                     if (i < fullPaths.size()) fullPaths[i] = mp3_path;
                 }
+            } else if (path.find("@rain:ytm\\") != std::string::npos) {
+                std::string id = path;
+                removeAll(id, "@rain:ytm\\");
+                std::string mp3_path = cacheFolder + id + ".mp3";
+                std::string info_path = cacheFolder + id + ".infosp";
+
+                if (!fs::exists(mp3_path) || !fs::exists(info_path)) {
+                    std::string title, artist;
+                    getYTMTrackInfo(id, title, artist);
+                    getYTMTrack(id, cacheFolder + id + ".mp3");
+
+                    if (fs::exists(cacheFolder + id + ".mp3")) {
+                        writeFile(info_path, title + "\n" + artist);
+
+                        std::lock_guard<std::mutex> lock(data_mutex);
+                        if (i < list.size()) list[i] = title + " - " + artist;
+                        if (i < fullPaths.size()) fullPaths[i] = mp3_path;
+                    }
+                } else {
+                    std::lock_guard<std::mutex> lock(data_mutex);
+                    if (i < fullPaths.size()) fullPaths[i] = mp3_path;
+                }
             }
         }
     }
