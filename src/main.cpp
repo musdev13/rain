@@ -29,6 +29,7 @@ int main(int argc, char* argv[]){
     SC_clientID = readFirstLine((fs::path(getenv("HOME")) / ".config/rain/SCCID").string());
     // system(("notify-send \""+SC_clientID+"\"").c_str());
 
+    // for (int i=0;i<10;i++) searchList.push_back("Musya");
     refreshList();
     // for (auto file:fullPaths){
     //     std::cout << file << std::endl;

@@ -1,4 +1,5 @@
 #include "mus.h/atomic_vars.hpp"
+#include <vector>
 
 std::atomic<bool> running(true);
 std::atomic<size_t> current(0);
@@ -15,3 +16,6 @@ std::vector<std::string> formatedItems;
 
 std::string SC_clientID;
 std::mutex data_mutex;
+
+std::vector<std::string> searchList;
+std::vector<std::string> rawSearchList;

@@ -19,3 +19,5 @@ extern std::vector<std::string> files;
 extern std::vector<std::string> formatedItems;
 extern std::string SC_clientID;
 extern std::mutex data_mutex;
+extern std::vector<std::string> searchList;
+extern std::vector<std::string> rawSearchList;

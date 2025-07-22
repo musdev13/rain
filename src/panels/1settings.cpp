@@ -1,8 +1,9 @@
 #include "../mus.h/panels/1settings.hpp"
+#include <ftxui/component/component.hpp>
 
 Settings::Settings(){
     ftxui::InputOption inputOptions;
-    inputOptions.placeholder = "Spotify/Soundcloud Track URL...";
+    inputOptions.placeholder = "Online Track URL...";
     input = Input(&url, inputOptions);
     inputBlocked = CatchEvent(input, [this](Event event) {
         if (event == Event::Return){
@@ -19,14 +20,35 @@ Settings::Settings(){
         return false;
     });
 
+    ftxui::InputOption searchInputOptions;
+    searchInputOptions.placeholder = "Search Online Track...";
+    searchInput = Input(&searchInputContent,searchInputOptions);
+    searchInputBlocked = CatchEvent(searchInput, [this](Event event) {
+        if (event == Event::Return){
+            return true;
+        }
+        return false;
+    });
+
+    selected = 0;
+    menu = Menu(&searchList, &selected, opt);
+
 
     layout = Container::Horizontal({
-        inputBlocked
+        Container::Vertical({
+            inputBlocked,
+            searchInputBlocked,
+            menu
+        })
     });
 }
 
 ftxui::Element Settings::getElement() {
     return vbox({
-        input->Render()
-    });
+        input->Render(),
+        ftxui::separator(),
+        searchInput->Render(),
+        ftxui::separator(),
+        vbox(menu->Render()) | yframe | flex
+    }) | flex;
 }
