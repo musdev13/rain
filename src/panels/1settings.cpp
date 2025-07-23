@@ -1,37 +1,35 @@
 #include "../mus.h/panels/1settings.hpp"
 #include <ftxui/component/component.hpp>
 
-Settings::Settings(){
-    ftxui::InputOption inputOptions;
-    inputOptions.placeholder = "Online Track URL...";
-    input = Input(&url, inputOptions);
-    inputBlocked = CatchEvent(input, [this](Event event) {
-        if (event == Event::Return){
-            if (url.find("open.spotify.com/track/") != std::string::npos)
-                addSpotifyTrack(url);
-            else if (url.find("soundcloud.com/") != std::string::npos)
-                addSoundcloudTrack(url);
-            else if (url.find("music.youtube.com/") != std::string::npos)
-                addYTMTrack(url);
-            refreshList();
-            url = "";
-            return true;
+void osearchM(std::thread& osearch, std::string& searchInputContent){
+    if (searchInputContent.find("https://") != std::string::npos){
+        if (searchInputContent.find("open.spotify.com/track/") != std::string::npos)
+            addSpotifyTrack(searchInputContent);
+        else if (searchInputContent.find("soundcloud.com/") != std::string::npos)
+            addSoundcloudTrack(searchInputContent);
+        else if (searchInputContent.find("music.youtube.com/") != std::string::npos)
+            addYTMTrack(searchInputContent);
+        refreshList();
+        menuctl.setID(3);
+        searchInputContent = "";
+    } else {
+        if (osearch.joinable()){
+            osearchRunning = false;
+            osearch.join();
         }
-        return false;
-    });
+        std::string formatedName = url_encode(searchInputContent);
+        osearchRunning = true;
+        osearch = std::thread(osearchd, formatedName);
+    }
+}
 
+Settings::Settings(){
     ftxui::InputOption searchInputOptions;
-    searchInputOptions.placeholder = "Search Online Track...";
+    searchInputOptions.placeholder = "Search Track/Add by URL...";
     searchInput = Input(&searchInputContent,searchInputOptions);
     searchInputBlocked = CatchEvent(searchInput, [this](Event event) {
         if (event == Event::Return){
-            if (osearch.joinable()){
-                osearchRunning = false;
-                osearch.join();
-            }
-            std::string formatedName = url_encode(searchInputContent);
-            osearchRunning = true;
-            osearch = std::thread(osearchd, formatedName);
+            osearchM(osearch, searchInputContent);
             return true;
         }
         return false;
@@ -50,7 +48,6 @@ Settings::Settings(){
 
     layout = Container::Horizontal({
         Container::Vertical({
-            inputBlocked,
             searchInputBlocked,
             menu
         })
@@ -59,8 +56,6 @@ Settings::Settings(){
 
 ftxui::Element Settings::getElement() {
     return vbox({
-        input->Render(),
-        ftxui::separator(),
         searchInput->Render(),
         ftxui::separator(),
         vbox(menu->Render()) | yframe | flex
