@@ -11,7 +11,7 @@ ftxui::Element HelpPanel::getElement(){
             ftxui::text(" Ctrl+S - focus on play button "),
             ftxui::text(" Ctrl+←→ - change track pos "),
             ftxui::text(" Ctrl+↑↓ - change track order "),
-            ftxui::text(" Ctrl+X - remove track "),
+            // ftxui::text(" Ctrl+X - remove track "),
             ftxui::text(" Ctrl+R - refresh track list "),
             ftxui::text(""),
             ftxui::text(" Ctrl+B - show/hide this panel "),

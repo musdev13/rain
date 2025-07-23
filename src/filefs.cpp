@@ -6,30 +6,30 @@
 void debug(const std::string str){system(("notify-send \""+str+"\"").c_str());}
 
 
-void deleteLine(const std::string& pathToFolder, int lineNum) {
-    std::string path = pathToFolder + "/playlist";
+// void deleteLine(const std::string& pathToFolder, int lineNum) {
+//     std::string path = pathToFolder + "/playlist";
 
-    std::ifstream checkFile(path);
-    checkFile.close();
+//     std::ifstream checkFile(path);
+//     checkFile.close();
 
-    std::ifstream inFile(path);
+//     std::ifstream inFile(path);
 
-    std::vector<std::string> lines;
-    std::string line;
-    while (std::getline(inFile, line)) {
-        lines.push_back(line);
-    }
-    inFile.close();
+//     std::vector<std::string> lines;
+//     std::string line;
+//     while (std::getline(inFile, line)) {
+//         lines.push_back(line);
+//     }
+//     inFile.close();
 
-    lines.erase(lines.begin() + lineNum);
+//     lines.erase(lines.begin() + lineNum);
 
-    std::ofstream outFile(path);
+//     std::ofstream outFile(path);
 
-    for (const auto& l : lines) {
-        outFile << l << "\n";
-    }
-    outFile.close();
-}
+//     for (const auto& l : lines) {
+//         outFile << l << "\n";
+//     }
+//     outFile.close();
+// }
 
 
 

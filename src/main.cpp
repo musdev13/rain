@@ -2,6 +2,7 @@
 #include "mus.h/filefs.hpp"
 #include "mus.h/panels/panels.hpp"
 #include <ftxui/component/event.hpp>
+#include <ftxui/dom/elements.hpp>
 
 int main(int argc, char* argv[]){
     pathToFolder = argv[1];
@@ -69,6 +70,7 @@ int main(int argc, char* argv[]){
         return vbox({
             // здесь хэдер
             panels[0]->getElement(),
+            menuctl.getID() == 1 ? (text("Search Page") | center):(filler()),
             separator(),
             // здесь будет само меню
             hbox({
@@ -117,22 +119,22 @@ int main(int argc, char* argv[]){
             if (selected_global -1 >=0) selected_global--;
             return true;
         }
-        if (event == Event::CtrlX) {
-            if (selected_global >= 0 && selected_global < static_cast<int>(files.size())) {
-                deleteLine(pathToFolder, selected_global);
-                refreshList();
+        // if (event == Event::CtrlX) {
+        //     if (selected_global >= 0 && selected_global < static_cast<int>(files.size())) {
+        //         deleteLine(pathToFolder, selected_global);
+        //         refreshList();
 
-                if (files.empty()) {
-                    selected_global = 0;
-                } else if (selected_global >= static_cast<int>(files.size())) {
-                    selected_global = static_cast<int>(files.size()) - 1;
-                }
+        //         if (files.empty()) {
+        //             selected_global = 0;
+        //         } else if (selected_global >= static_cast<int>(files.size())) {
+        //             selected_global = static_cast<int>(files.size()) - 1;
+        //         }
 
-                return true;
-            } else {
-                return false;
-            }
-        }
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // }
         if (event == Event::ArrowDownCtrl){
             moveLineDown(pathToFolder, selected_global);
             refreshList();
