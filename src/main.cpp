@@ -1,6 +1,7 @@
 #include "mus.h/atomic_vars.hpp"
 #include "mus.h/filefs.hpp"
 #include "mus.h/panels/panels.hpp"
+#include <ftxui/component/event.hpp>
 
 int main(int argc, char* argv[]){
     pathToFolder = argv[1];
@@ -72,7 +73,7 @@ int main(int argc, char* argv[]){
             // здесь будет само меню
             hbox({
                 panels[menuctl.getID()]->getElement(),
-                menuctl.getID()!=1 ? (infoPanel ? (panels[5]->getElement()):(filler())):(filler())
+                infoPanel ? (panels[5]->getElement()):(filler())
             }) | flex,
             separator(),
             panels[4]->getElement(),
@@ -108,6 +109,34 @@ int main(int argc, char* argv[]){
         if (event == Event::ArrowLeftCtrl && time_pos > 5) {
             const char* seek_backward[] = {"seek", "-5", "relative", nullptr};
             mpv_command(mpv, seek_backward);
+            return true;
+        }
+        if (event == Event::ArrowUpCtrl){
+            moveLineUp(pathToFolder, selected_global);
+            refreshList();
+            if (selected_global -1 >=0) selected_global--;
+            return true;
+        }
+        if (event == Event::CtrlX) {
+            if (selected_global >= 0 && selected_global < static_cast<int>(files.size())) {
+                deleteLine(pathToFolder, selected_global);
+                refreshList();
+
+                if (files.empty()) {
+                    selected_global = 0;
+                } else if (selected_global >= static_cast<int>(files.size())) {
+                    selected_global = static_cast<int>(files.size()) - 1;
+                }
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (event == Event::ArrowDownCtrl){
+            moveLineDown(pathToFolder, selected_global);
+            refreshList();
+            if (selected_global +1 < list.size()) selected_global++;
             return true;
         }
         if (event == Event::CtrlB){

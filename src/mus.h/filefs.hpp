@@ -13,7 +13,9 @@
 namespace fs = std::filesystem;
 
 void debug(const std::string str);
-
+void deleteLine(const std::string& pathToFolder, int lineNum);
+void moveLineUp(const std::string& pathToFolder, int lineNum);
+void moveLineDown(const std::string& pathToFolder, int lineNum);
 std::string readFirstLine(const std::string& filename);
 void insertFirstLine(const std::string& path, const std::string& newLine);
 std::vector<std::string> readInf(const std::string& path);

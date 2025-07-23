@@ -5,6 +5,74 @@
 
 void debug(const std::string str){system(("notify-send \""+str+"\"").c_str());}
 
+
+void deleteLine(const std::string& pathToFolder, int lineNum) {
+    std::string path = pathToFolder + "/playlist";
+
+    std::ifstream checkFile(path);
+    checkFile.close();
+
+    std::ifstream inFile(path);
+
+    std::vector<std::string> lines;
+    std::string line;
+    while (std::getline(inFile, line)) {
+        lines.push_back(line);
+    }
+    inFile.close();
+
+    lines.erase(lines.begin() + lineNum);
+
+    std::ofstream outFile(path);
+
+    for (const auto& l : lines) {
+        outFile << l << "\n";
+    }
+    outFile.close();
+}
+
+
+
+void moveLineUp(const std::string& pathToFolder, int lineNum) {
+    std::string path = pathToFolder + "/playlist";
+    std::ifstream inFile(path);
+    if (!inFile) return;
+
+    std::vector<std::string> lines;
+    std::string line;
+    while (std::getline(inFile, line))
+        lines.push_back(line);
+    inFile.close();
+
+    if (lineNum > 0 && lineNum < static_cast<int>(lines.size())) {
+        std::swap(lines[lineNum], lines[lineNum - 1]);
+    }
+
+    std::ofstream outFile(path);
+    for (const auto& l : lines)
+        outFile << l << "\n";
+}
+
+void moveLineDown(const std::string& pathToFolder, int lineNum) {
+    std::string path = pathToFolder + "/playlist";
+    std::ifstream inFile(path);
+    if (!inFile) return;
+
+    std::vector<std::string> lines;
+    std::string line;
+    while (std::getline(inFile, line))
+        lines.push_back(line);
+    inFile.close();
+
+    if (lineNum >= 0 && lineNum < static_cast<int>(lines.size()) - 1) {
+        std::swap(lines[lineNum], lines[lineNum + 1]);
+    }
+
+    std::ofstream outFile(path);
+    for (const auto& l : lines)
+        outFile << l << "\n";
+}
+
 std::string readFirstLine(const std::string& filename){
     std::ifstream file(filename);
     std::string line;
@@ -116,27 +184,38 @@ void refreshList() {
     std::lock_guard<std::mutex> lock(data_mutex);
 
     files = getFiles(pathToFolder);
+
     fullPaths.clear();
+    formatedItems.clear();
+
+    if (files.empty()) {
+        list = formatedItems;
+        return;
+    }
 
     fs::create_directories(fs::path(fs::path(getenv("HOME")) / ".cache/rain/test").parent_path());
 
+    fullPaths.reserve(files.size());
+    formatedItems.reserve(files.size());
+
     for (const auto& file : files) {
-        if (file.find("@rain:spotify\\") != std::string::npos || file.find("@rain:soundcloud\\") != std::string::npos || file.find("@rain:ytm\\") != std::string::npos) {
+        if (file.find("@rain:spotify\\") != std::string::npos ||
+            file.find("@rain:soundcloud\\") != std::string::npos ||
+            file.find("@rain:ytm\\") != std::string::npos) {
             fullPaths.push_back(file);
         } else {
             fullPaths.push_back(std::string(pathToFolder + "/" + file));
         }
     }
 
-    formatedItems.clear();
-    formatedItems.resize(files.size());
-    fullPaths.resize(files.size());
-
     for (size_t i = 0; i < files.size(); ++i) {
         std::string track = files[i];
         std::string title, artist;
 
-        if (track.find("@rain:spotify\\") != std::string::npos || track.find("@rain:soundcloud\\") != std::string::npos || track.find("@rain:ytm\\") != std::string::npos) {
+        if (track.find("@rain:spotify\\") != std::string::npos ||
+            track.find("@rain:soundcloud\\") != std::string::npos ||
+            track.find("@rain:ytm\\") != std::string::npos) {
+
             std::string id = track;
             if (track.find("@rain:spotify\\") != std::string::npos) {
                 removeAll(id, "@rain:spotify\\");
@@ -146,7 +225,6 @@ void refreshList() {
             } else if (track.find("@rain:ytm\\") != std::string::npos) {
                 removeAll(id, "@rain:ytm\\");
             }
-
 
             std::string mp3_path = cacheFolder + id + ".mp3";
             std::string info_path = cacheFolder + id + ".infosp";
@@ -162,14 +240,20 @@ void refreshList() {
                 fullPaths[i] = track;
             }
         } else {
-            TagLib::FileRef f((pathToFolder + "/" + track).c_str());
-            TagLib::Tag* tag = f.tag();
-            title = tag ? tag->title().to8Bit(true) : "unknown";
-            artist = tag ? tag->artist().to8Bit(true) : "unknown";
-            fullPaths[i] = pathToFolder + "/" + track;
+            try {
+                TagLib::FileRef f((pathToFolder + "/" + track).c_str());
+                TagLib::Tag* tag = f.tag();
+                title = tag ? tag->title().to8Bit(true) : "unknown";
+                artist = tag ? tag->artist().to8Bit(true) : "unknown";
+                fullPaths[i] = pathToFolder + "/" + track;
+            } catch (...) {
+                title = "error";
+                artist = "error";
+                fullPaths[i] = pathToFolder + "/" + track;
+            }
         }
 
-        formatedItems[i] = title + " - " + artist;
+        formatedItems.push_back(title + " - " + artist);
     }
 
     list = formatedItems;
