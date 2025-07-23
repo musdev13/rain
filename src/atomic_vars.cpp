@@ -1,4 +1,5 @@
 #include "mus.h/atomic_vars.hpp"
+#include <atomic>
 #include <vector>
 
 std::atomic<bool> running(true);
@@ -19,3 +20,4 @@ std::mutex data_mutex;
 
 std::vector<std::string> searchList;
 std::vector<std::string> rawSearchList;
+std::atomic<bool> osearchRunning(false);

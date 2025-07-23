@@ -25,6 +25,13 @@ Settings::Settings(){
     searchInput = Input(&searchInputContent,searchInputOptions);
     searchInputBlocked = CatchEvent(searchInput, [this](Event event) {
         if (event == Event::Return){
+            if (osearch.joinable()){
+                osearchRunning = false;
+                osearch.join();
+            }
+            std::string formatedName = url_encode(searchInputContent);
+            osearchRunning = true;
+            osearch = std::thread(osearchd, formatedName);
             return true;
         }
         return false;
