@@ -36,7 +36,6 @@ int main(int argc, char* argv[]){
     // }
 
 
-    Menuctl menuctl;
     auto screen = ScreenInteractive::TerminalOutput();
     std::vector<std::unique_ptr<panelBase>> panels;
     // panels.push_back(std::unique_ptr<panelBase>(header));

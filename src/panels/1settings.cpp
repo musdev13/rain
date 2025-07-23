@@ -38,6 +38,13 @@ Settings::Settings(){
     });
 
     selected = 0;
+    opt.on_enter =[&]{
+        // debug(rawSearchList[selected]);
+        insertFirstLine(pathToFolder+"/playlist", rawSearchList[selected]);
+        refreshList();
+        menuctl.setID(3);
+        searchInputContent = "";
+    };
     menu = Menu(&searchList, &selected, opt);
 
 

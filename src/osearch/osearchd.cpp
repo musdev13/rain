@@ -6,5 +6,8 @@ void osearchd(const std::string formatedName){
     if (osearchRunning) {
         osearchSoundcloudTrack(formatedName);
     }
+    if(osearchRunning){
+        osearchSpotifyTrack(formatedName);
+    }
     osearchRunning = false;
 }

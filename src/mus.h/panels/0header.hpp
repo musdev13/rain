@@ -20,6 +20,6 @@ public:
     Header(Menuctl* menuctl, ScreenInteractive* screen);
 
     ftxui::Element getElement() override;
-    
+
     Component getInputComponent();
 };

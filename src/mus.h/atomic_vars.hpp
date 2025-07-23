@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <mutex>
+#include "menuctl.hpp"
 
 
 extern std::atomic<bool> running;
@@ -22,3 +23,4 @@ extern std::mutex data_mutex;
 extern std::vector<std::string> searchList;
 extern std::vector<std::string> rawSearchList;
 extern std::atomic<bool> osearchRunning;
+extern Menuctl menuctl;
