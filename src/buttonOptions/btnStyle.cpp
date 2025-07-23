@@ -1,7 +1,7 @@
 #include "../mus.h/buttonOptions/btnStyle.hpp"
 
 ButtonOption btnStyle(){
-    auto option = ButtonOption::Animated();
+    auto option = ButtonOption();
     option.transform = [](const EntryState& s){
         auto element = text(s.label) | center | bold;
         element = hbox({text(" "),element,text(" ")});

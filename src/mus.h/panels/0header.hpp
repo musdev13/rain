@@ -2,9 +2,10 @@
 #include "panelBase.hpp"
 #include "../menuctl.hpp"
 #include <ftxui/component/screen_interactive.hpp>
-#include "../buttonOptions/btnHeaderStyle.hpp"
+#include "../buttonOptions/btnStyle.hpp"
 #include <iostream>
 #include "../atomic_vars.hpp"
+#include "../osearch/osearch.hpp"
 // #include <unistd.h>
 
 
@@ -14,8 +15,9 @@ private:
     ftxui::Component button2;
     ftxui::Component input;
     Component inputBlocked;
-    std::string inputContent;
+
     int prevMenuID;
+    std::thread osearch;
 public:
     Header(Menuctl* menuctl, ScreenInteractive* screen);
 

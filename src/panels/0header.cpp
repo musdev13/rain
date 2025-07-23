@@ -25,18 +25,24 @@ Header::Header(Menuctl* menuctl, ScreenInteractive* screen){
             menuctl->setID(1);
         }
         screen->PostEvent(Event::Custom);
-    }, btnHeaderStyle());
-    button2 = Button("", [this] {
-        search(&inputContent);
-    }, btnHeaderStyle());
+    }, btnStyle());
+    button2 = Button("", [this, menuctl] {
+        if (menuctl->getID() == 1) osearchM(osearch, inputContent);
+        else search(&inputContent);
+    }, btnStyle());
     ftxui::InputOption options;
     options.placeholder = "Search...";
 
     input = Input(&inputContent, options);
 
-    inputBlocked = CatchEvent(input, [this](Event event) {
+    inputBlocked = CatchEvent(input, [this, menuctl](Event event) {
         if (event == Event::Return){
+            if (menuctl->getID() == 1){
+                osearchM(osearch, inputContent);
+                return true;
+            }
             search(&inputContent);
+            inputContent = "";
             return true;
         }
         return false;

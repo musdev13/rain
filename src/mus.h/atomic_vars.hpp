@@ -24,3 +24,4 @@ extern std::vector<std::string> searchList;
 extern std::vector<std::string> rawSearchList;
 extern std::atomic<bool> osearchRunning;
 extern Menuctl menuctl;
+extern std::string inputContent;

@@ -24,40 +24,24 @@ void osearchM(std::thread& osearch, std::string& searchInputContent){
 }
 
 Settings::Settings(){
-    ftxui::InputOption searchInputOptions;
-    searchInputOptions.placeholder = "Search Track/Add by URL...";
-    searchInput = Input(&searchInputContent,searchInputOptions);
-    searchInputBlocked = CatchEvent(searchInput, [this](Event event) {
-        if (event == Event::Return){
-            osearchM(osearch, searchInputContent);
-            return true;
-        }
-        return false;
-    });
-
     selected = 0;
     opt.on_enter =[&]{
         // debug(rawSearchList[selected]);
         insertFirstLine(pathToFolder+"/playlist", rawSearchList[selected]);
         refreshList();
         menuctl.setID(3);
-        searchInputContent = "";
+        inputContent = "";
     };
     menu = Menu(&searchList, &selected, opt);
 
 
     layout = Container::Horizontal({
-        Container::Vertical({
-            searchInputBlocked,
-            menu
-        })
+        menu
     });
 }
 
 ftxui::Element Settings::getElement() {
     return vbox({
-        searchInput->Render(),
-        ftxui::separator(),
         vbox(menu->Render()) | yframe | flex
     }) | flex;
 }

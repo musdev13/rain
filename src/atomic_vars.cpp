@@ -22,3 +22,4 @@ std::vector<std::string> searchList;
 std::vector<std::string> rawSearchList;
 std::atomic<bool> osearchRunning(false);
 Menuctl menuctl;
+std::string inputContent;

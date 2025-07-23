@@ -10,17 +10,12 @@
 #include "../url.hpp"
 #include "../osearch/osearch.hpp"
 
-void osearchM(std::thread& osearch, std::string& searchInputContent);
-
 class Settings : public panelBase {
 private:
     ftxui::Component menu;
     int selected;
     MenuOption opt;
-    ftxui::Component searchInput;
-    ftxui::Component searchInputBlocked;
-    std::string searchInputContent;
-    std::thread osearch;
+
 public:
     Settings();
 
