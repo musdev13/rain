@@ -43,8 +43,8 @@
 | Track caching        | ✅  |           Online tracks can be cached for offline listening |
 | SoundCloud tracks    | ✅  |                                      Tracks from SoundCloud |
 | YouTube Music tracks | ✅  |                                    Tracks from YouTube Music|
-| Search Tracks online | 🛠️  |                         Search online tracks by name in app |
-| Import from playlist | ❌  | Import tracks from playlists from Spotify, Soundcloud, etc. |
+| Search Tracks online | ✅  |                         Search online tracks by name in app |
+| Import from playlist | 🛠️  | Import tracks from playlists from Spotify, Soundcloud, etc. |
 | Windows Version      | ❌  |                          Source code and Binary for Windows |
 
 </div>
@@ -126,7 +126,7 @@ If you later add the track to a folder, Rain will **automatically add the file t
 
 <h2>Online Tracks</h2>
 
-You can add **online tracks**(Spotify/Soundcloud, etc...) by url **at top-left corner**.
+You can add **online tracks**(Spotify/Soundcloud, etc...) **at top-left corner**.
 
 Or you can add track **manualy in playlist file**.
 
@@ -188,6 +188,7 @@ on startup, **a panel that explains the hotkeys will open on the right side** of
 | Ctrl+F |          focus on search bar |
 | Ctrl+S | focus on pause/resume button |
 | Ctrl+↔ |        change track position |
+| Ctrl+↑↓|           change track order |
 | Ctrl+R |           refresh track list |
 | Ctrl+B |         show/hide help panel |
 | Ctrl+Q |                         quit |
