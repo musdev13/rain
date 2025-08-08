@@ -8,7 +8,14 @@ auto screen = ScreenInteractive::TerminalOutput();
 
 int main(int argc, char* argv[]){
     // debug(std::to_string(argc));
-    if (argc < 2) exit(1);
+    if (argc < 2) {
+        std::string mssg = "Using:\nrain <playlistDir>\n";
+        #ifdef __WIN32
+        debug("Using: rain <playlistDir>     Or you can drag-and-drop playlist folder on rain shortcut");
+        #endif
+        std::cerr << mssg;
+        exit(1);
+    }
     initCacheFolder();
     // std::cout << "lol\n";
     pathToFolder = argv[1];

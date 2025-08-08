@@ -59,7 +59,7 @@ post_win: $(TARGET_BASE).exe
 		cp "$$lib" "$(dir $(TARGET))"; \
 	done
 	@echo "Copying CA bundle..."
-	@cp src/ca-bundle.crt $(dir $(TARGET))
+	@cp /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt $(dir $(TARGET))/ca-bundle.crt
 	@echo "Windows build completed!"
 
 # ======== Utility Targets ========

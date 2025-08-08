@@ -44,32 +44,31 @@
 | SoundCloud tracks    | ✅  |                                      Tracks from SoundCloud |
 | YouTube Music tracks | ✅  |                                    Tracks from YouTube Music|
 | Search Tracks online | ✅  |                         Search online tracks by name in app |
-| Import from playlist | 🛠️  | Import tracks from playlists from Spotify, Soundcloud, etc. |
-| Windows Version      | ❌  |                          Source code and Binary for Windows |
+| Import from playlist | ❓  | Import tracks from playlists from Spotify, Soundcloud, etc. |
+| Windows Version      | ✅  |                          Source code and Binary for Windows |
 
 </div>
 </div>
-
 <div align="center" style="border: 3px solid white; border-radius:15px;padding:10px 20px;margin-top:15px">
 <h1>Build</h1>
 
-> Yeah, Rain does not have a binary version yet, but if you want, I'll upload Rain on [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) and [GitHub Releases](https://github.com/musdev13/rain/releases) at release
-
-> Also, there is no Windows version of Rain yet, but the key word here is “yet”
+> Yeah, Rain does not have a binary version yet, but if you want, I'll upload Rain on [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) and [GitHub Releases](https://github.com/musdev13/rain/releases)
 
 <h2>Dependencies</h2>
-<p>I use arch btw, so i can just leave a <b>list of packages</b> you need to install at this moment:</p>
-
-<i>P.S.:It's not a names of packages that pacman use</i>
+<p>There is a <b>list of things</b> you need to install:</p>
 
 <ul style="list-style-position: inside; text-align: center; padding-left: 0; font-weight: bold;">
+    <li>one of the nerd fonts in terminal</li>
+    <li>(for windows) Windows Terminal (not legacy cmd)</li>
+    <li>(for windows) MYSYS2 MinGW64</li>
     <li>g++</li>
     <li>make</li>
-    <li><a href="https://github.com/ArthurSonzogni/FTXUI">ftxui</a></li>
+    <li>ftxui</li>
     <li>libmpv</li>
     <li>taglib</li>
     <li>curl</li>
-    <li>yt-dlp</li>
+    <li>nlohmann/json</li>
+    <li>yt-dlp(optional for YTMusic)</li>
 </ul>
 
 > Tell me pls if i forgot to add some library to list
@@ -82,11 +81,11 @@ git clone --depth 1 https://github.com/musdev13/rain.git
 cd rain
 ```
 
-Now you can **build Rain using make**:
+Now you can **build Rain using make** | `make win` for windows:
 ```sh
 make
 ```
-Now you can **install Rain**:
+Now you can **install Rain** | or move and rename `build/` folder with rain.exe and dll files for Windows:
 ```sh
 sudo make install
 ```
@@ -147,7 +146,7 @@ You can add spotify track into **playlist file** by adding this line:
 
 <h3>Soundcloud Tracks</h3>
 
-**YOU NEED TO FIND YOUR ClientID AND PUT IT IN `~/.config/rain/SCCID`**
+**YOU NEED TO FIND YOUR ClientID AND PUT IT IN `~/.config/rain/SCCID` (for linux) OR `folder\with\rain.exe\rain\SCCID` (for windows)**
 
 You can add soundcloud track into **playlist file** by adding this line:
 ```playlist
@@ -163,6 +162,8 @@ You can add soundcloud track into **playlist file** by adding this line:
 ```
 
 <h3>YouTube Music Tracks</h3>
+
+> you need to install yt-dlp first
 
 You can add YTMusic track into **playlist file** by adding this line:
 ```playlist
