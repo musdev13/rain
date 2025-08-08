@@ -41,6 +41,9 @@ Tokens getTokens() {
 
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &htmlContent);
+    #ifdef __WIN32
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+    #endif
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {

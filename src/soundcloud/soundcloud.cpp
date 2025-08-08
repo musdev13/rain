@@ -29,6 +29,9 @@ std::string httpGET(const std::string& url) {
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        #ifdef __WIN32
+        curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+        #endif
         curl_easy_perform(curl);
         curl_easy_cleanup(curl);
     }
@@ -67,6 +70,9 @@ void getSCTrack(const std::string& clientID, const std::string& cleanURL, const 
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        #ifdef __WIN32
+        curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+        #endif
         curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         fclose(file);

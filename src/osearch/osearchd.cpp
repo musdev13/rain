@@ -3,7 +3,7 @@
 void osearchd(const std::string formatedName){
     searchList.clear();
     rawSearchList.clear();
-    if (osearchRunning) {
+    if (osearchRunning && SC_clientID != "") {
         osearchSoundcloudTrack(formatedName);
     }
     if(osearchRunning){

@@ -23,3 +23,8 @@ std::vector<std::string> rawSearchList;
 std::atomic<bool> osearchRunning(false);
 Menuctl menuctl;
 std::string inputContent;
+#ifdef __WIN32
+const std::filesystem::path configDir = std::filesystem::current_path() / "rain";
+#else
+const std::filesystem::path configDir = std::filesystem::path(getenv("HOME")) / ".config/rain";
+#endif

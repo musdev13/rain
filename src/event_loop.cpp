@@ -45,7 +45,7 @@ void preload_tracks() {
                     if (i < fullPaths.size()) fullPaths[i] = mp3_path;
                 }
             }
-            else if (path.find("@rain:soundcloud\\") != std::string::npos) {
+            else if (path.find("@rain:soundcloud\\") != std::string::npos && SC_clientID != "") {
                 std::string id = path;
                 removeAll(id, "@rain:soundcloud\\");
                 std::string fileID = id;

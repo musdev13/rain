@@ -38,6 +38,9 @@ void getTrackInfo(const std::string& trackID, std::string& title, std::string& a
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
     curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
+    #ifdef __WIN32
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+    #endif
 
     CURLcode res = curl_easy_perform(curl);
     // std::cout << response_string << std::endl;

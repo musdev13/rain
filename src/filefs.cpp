@@ -3,7 +3,14 @@
 #include "mus.h/atomic_vars.hpp"
 #include <string>
 
-void debug(const std::string str){system(("notify-send \""+str+"\"").c_str());}
+void debug(const std::string str){
+#ifdef __WIN32
+    std::string cmd = "powershell -Command \"& {Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('" + str + "', '" + "Rain" + "') }\"";
+    system(cmd.c_str());
+#else
+    system(("notify-send \""+str+"\"").c_str());
+#endif
+}
 
 
 // void deleteLine(const std::string& pathToFolder, int lineNum) {
@@ -171,14 +178,20 @@ std::vector<std::string> getFiles(fs::path folderPath){
     return playlist;
 }
 
-std::string cacheFolder = [](){
+std::string cacheFolder;
+
+void initCacheFolder() {
+#ifdef _WIN32
+    cacheFolder = (configDir / "cache").string()+"\\";
+#else
     const char* home = getenv("HOME");
     if (!home) {
         system("notify-send 'HOME not set!'");
         std::exit(1);
     }
-    return std::string(home) + "/.cache/rain/";
-}();
+    cacheFolder = std::string(home) + "/.cache/rain/";
+#endif
+}
 
 void refreshList() {
     std::lock_guard<std::mutex> lock(data_mutex);
@@ -193,7 +206,7 @@ void refreshList() {
         return;
     }
 
-    fs::create_directories(fs::path(fs::path(getenv("HOME")) / ".cache/rain/test").parent_path());
+    fs::create_directories(fs::path(cacheFolder));
 
     fullPaths.reserve(files.size());
     formatedItems.reserve(files.size());
@@ -210,7 +223,7 @@ void refreshList() {
 
     for (size_t i = 0; i < files.size(); ++i) {
         std::string track = files[i];
-        std::string title, artist;
+        std::string title, artist, logo;
 
         if (track.find("@rain:spotify\\") != std::string::npos ||
             track.find("@rain:soundcloud\\") != std::string::npos ||
@@ -219,11 +232,14 @@ void refreshList() {
             std::string id = track;
             if (track.find("@rain:spotify\\") != std::string::npos) {
                 removeAll(id, "@rain:spotify\\");
+                logo = "󰓇";
             } else if (track.find("@rain:soundcloud\\") != std::string::npos) {
                 removeAll(id, "@rain:soundcloud\\");
                 for (char& c : id) if (c == '/') c = '.';
+                logo = "󰓀";
             } else if (track.find("@rain:ytm\\") != std::string::npos) {
                 removeAll(id, "@rain:ytm\\");
+                logo = "";
             }
 
             std::string mp3_path = cacheFolder + id + ".mp3";
@@ -245,6 +261,7 @@ void refreshList() {
                 TagLib::Tag* tag = f.tag();
                 title = tag ? tag->title().to8Bit(true) : "unknown";
                 artist = tag ? tag->artist().to8Bit(true) : "unknown";
+                logo = "󰸪";
                 fullPaths[i] = pathToFolder + "/" + track;
             } catch (...) {
                 title = "error";
@@ -253,7 +270,7 @@ void refreshList() {
             }
         }
 
-        formatedItems.push_back(title + " - " + artist);
+        formatedItems.push_back(title + " - " + artist + " "+logo+" ");
     }
 
     list = formatedItems;

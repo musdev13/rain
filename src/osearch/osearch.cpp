@@ -17,8 +17,12 @@ void osearchSoundcloudTrack(std::string formatedName) {
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
     curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
     curl_easy_setopt(curl, CURLOPT_USERAGENT, "curl/7.88.1");
+    #ifdef __WIN32
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+    #endif
 
     CURLcode res = curl_easy_perform(curl);
+    // debug(response);
     json j = json::parse(response);
 
     // debug(j["collection"][0]["permalink_url"]);
@@ -43,6 +47,9 @@ void osearchSpotifyTrack(std::string formatedName) {
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
     curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
     curl_easy_setopt(curl, CURLOPT_USERAGENT, "curl/7.88.1");
+    #ifdef __WIN32
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+    #endif
 
     CURLcode res = curl_easy_perform(curl);
     json j = json::parse(response);

@@ -1,5 +1,8 @@
 #include "../mus.h/panels/1settings.hpp"
 #include <ftxui/component/component.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+
+extern ftxui::ScreenInteractive screen;
 
 void osearchM(std::thread& osearch, std::string& searchInputContent){
     if (searchInputContent.find("https://") != std::string::npos){
@@ -41,7 +44,8 @@ Settings::Settings(){
 }
 
 ftxui::Element Settings::getElement() {
-    return vbox({
-        vbox(menu->Render()) | yframe | flex
-    }) | flex;
+    // menu = Menu(&searchList, &selected, opt);
+    return hbox({
+        menu->Render()
+    }) | yframe | flex;
 }

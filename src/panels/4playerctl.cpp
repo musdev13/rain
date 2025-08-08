@@ -85,6 +85,7 @@ playerCtl::playerCtl(mpv_handle* mpvv, ScreenInteractive& screenr) {
 
             const char* path = nullptr;
             if (mpv_get_property(mpv, "path", MPV_FORMAT_STRING, &path) >= 0 && path) {
+                // debug(cacheFolder);
                 if (std::string(path).find(cacheFolder) != std::string::npos) {
                     std::string path_str = path;
 

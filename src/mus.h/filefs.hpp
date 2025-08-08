@@ -29,5 +29,6 @@ void writePlaylist(const fs::path& playlistPath, const std::vector<std::string>&
 std::vector<std::string> getFiles(fs::path folderPath);
 
 extern std::string cacheFolder;
+void initCacheFolder();
 
 void refreshList();

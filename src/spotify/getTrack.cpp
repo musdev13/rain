@@ -29,6 +29,9 @@ void downloadFile(const std::string &url, const std::string &filename) {
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outfile);
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
+    #ifdef __WIN32
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+    #endif
 
     CURLcode res = curl_easy_perform(curl);
 
@@ -73,6 +76,9 @@ void getTrack(const std::string &trackID, std::string filePath) {
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
     curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
+    #ifdef __WIN32
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+    #endif
 
     CURLcode res = curl_easy_perform(curl);
     json j = json::parse(response_string);

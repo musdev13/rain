@@ -4,7 +4,13 @@
 #include <ftxui/component/event.hpp>
 #include <ftxui/dom/elements.hpp>
 
+auto screen = ScreenInteractive::TerminalOutput();
+
 int main(int argc, char* argv[]){
+    // debug(std::to_string(argc));
+    if (argc < 2) exit(1);
+    initCacheFolder();
+    // std::cout << "lol\n";
     pathToFolder = argv[1];
     // std::string artist;
     // std::string title;
@@ -28,7 +34,7 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    SC_clientID = readFirstLine((fs::path(getenv("HOME")) / ".config/rain/SCCID").string());
+    SC_clientID = readFirstLine((configDir/"SCCID").string());
     // system(("notify-send \""+SC_clientID+"\"").c_str());
 
     // for (int i=0;i<10;i++) searchList.push_back("Musya");
@@ -37,8 +43,6 @@ int main(int argc, char* argv[]){
     //     std::cout << file << std::endl;
     // }
 
-
-    auto screen = ScreenInteractive::TerminalOutput();
     std::vector<std::unique_ptr<panelBase>> panels;
     // panels.push_back(std::unique_ptr<panelBase>(header));
     panels.push_back(std::make_unique<Blank>());

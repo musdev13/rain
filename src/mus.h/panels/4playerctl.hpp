@@ -13,7 +13,7 @@ private:
     ScreenInteractive* screen;
     std::thread updateThread;
     std::atomic<bool> active{true};
-    std::string config_path = (fs::path(getenv("HOME")) / ".config/rain/volume.cfg").string();
+    std::string config_path = (configDir / "volume.cfg").string();
 
     bool paused;
     std::string icon = "";

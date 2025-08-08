@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <mutex>
+#include <filesystem>
 #include "menuctl.hpp"
 
 
@@ -25,3 +26,4 @@ extern std::vector<std::string> rawSearchList;
 extern std::atomic<bool> osearchRunning;
 extern Menuctl menuctl;
 extern std::string inputContent;
+extern const std::filesystem::path configDir;
