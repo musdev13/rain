@@ -1,22 +1,21 @@
 CXX = g++
 WINDRES = windres
-
 SRC_DIRS := src src/panels src/buttonOptions src/spotify src/soundcloud src/ytm src/osearch
 BUILD_DIR := build
 TARGET_BASE := $(BUILD_DIR)/rain
-
 SRC := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 OBJ_LINUX := $(patsubst %.cpp,$(BUILD_DIR)/linux/%.o,$(SRC))
 OBJ_WIN := $(patsubst %.cpp,$(BUILD_DIR)/win/%.o,$(SRC))
-
 RC_FILE := src/resource.rc
 RC_OBJ := $(BUILD_DIR)/win/src/resource.o
 
 # ======== Linux Build ========
+.PHONY: linux win clean run install post_win
+
 linux: CXXFLAGS = -std=c++20 -Wall -Wextra -I./src
 linux: LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv -ltag -lcurl
 linux: TARGET = $(TARGET_BASE)
-linux: $(TARGET)
+linux: $(TARGET_BASE)
 
 $(TARGET_BASE): $(OBJ_LINUX)
 	@echo "Linking Linux: $@"
@@ -66,8 +65,8 @@ post_win: $(TARGET_BASE).exe
 clean:
 	rm -rf $(BUILD_DIR)
 
-run:
+run: $(TARGET_BASE)
 	$(TARGET_BASE) /home/$(shell whoami)/Music/test
 
-install:
+install: $(TARGET_BASE)
 	install -Dm755 $(TARGET_BASE) /usr/bin/rain
