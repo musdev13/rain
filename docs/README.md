@@ -18,7 +18,7 @@
 
 <div align="center">
 
-> It's just my C++ thesis💻, so it's not even beta, I guess. Rain is still in development and may contain a bunch of bugs🐛 So... don't worry about that. Just report me about them, k.? :3
+> It's just my C++ thesis💻 and it may contain a bunch of bugs🐛 So... don't worry about that. Just report me about them, k.? :3
 </div>
 
 <div align="center", style="border: 3px solid white; border-radius:15px;padding:10px 20px">
