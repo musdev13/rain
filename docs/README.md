@@ -50,9 +50,34 @@
 </div>
 </div>
 <div align="center" style="border: 3px solid white; border-radius:15px;padding:10px 20px;margin-top:15px">
-<h1>Build</h1>
+<h1>Installing</h1>
+<h2>Windows</h2>
 
-> Yeah, Rain does not have a binary version yet, but if you want, I'll upload Rain on [AUR](https://wiki.archlinux.org/title/Arch_User_Repository) and [GitHub Releases](https://github.com/musdev13/rain/releases)
+Download **RainInstaller.exe** from [GitHub Releases](https://github.com/musdev13/rain/releases)
+
+---
+
+<h2>Linux</h2>
+<h3>ArchLinux (AUR)</h3>
+
+You can install `rain-git` or `mrain-bin` from AUR
+
+<h3>Other</h3>
+
+Install next **dependencies** and download **rain** from [GitHub Releases](https://github.com/musdev13/rain/releases):
+
+<ul style="list-style-position: inside; text-align: center; padding-left: 0; font-weight: bold;">
+    <li>libmpv</li>
+    <li>taglib</li>
+    <li>curl</li>
+    <li>yt-dlp(optional for YTMusic)</li>
+</ul>
+
+> Or easier to compile from source code
+
+</div>
+<div align="center" style="border: 3px solid white; border-radius:15px;padding:10px 20px;margin-top:15px">
+<h1>Building</h1>
 
 <h2>Dependencies</h2>
 <p>There is a <b>list of things</b> you need to install:</p>
@@ -72,6 +97,8 @@
 </ul>
 
 > Tell me pls if i forgot to add some library to list
+
+---
 
 <h2>Actually a building process</h2>
 
@@ -177,6 +204,8 @@ You can add YTMusic track into **playlist file** by adding this line:
 ```playlist
 @rain:ytm\9nd5SThcLWE
 ```
+
+---
 
 <h2>Navigation</h2>
 
