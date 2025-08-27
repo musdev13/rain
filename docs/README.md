@@ -70,7 +70,7 @@ Install next **dependencies** and download **rain** from [GitHub Releases](https
     <li>libmpv</li>
     <li>taglib</li>
     <li>curl</li>
-    <li>yt-dlp(optional for YTMusic)</li>
+    <li>yt-dlp(optional for Spotify and YTMusic)</li>
 </ul>
 
 > Or easier to compile from source code
@@ -93,7 +93,7 @@ Install next **dependencies** and download **rain** from [GitHub Releases](https
     <li>taglib</li>
     <li>curl</li>
     <li>nlohmann/json</li>
-    <li>yt-dlp(optional for YTMusic)</li>
+    <li>yt-dlp(optional for Spotify and YTMusic)</li>
 </ul>
 
 > Tell me pls if i forgot to add some library to list
@@ -157,6 +157,8 @@ You can add **online tracks**(Spotify/Soundcloud, etc...) **at top-left corner**
 Or you can add track **manualy in playlist file**.
 
 <h3>Spotify Tracks</h3>
+
+**YOU NEED TO PUT ClientID AND ClientSecret IN `~/.config/rain/SPCID` (for linux) OR `folder\with\rain.exe\rain\SPCID` (for windows)**
 
 You can add spotify track into **playlist file** by adding this line:
 ```playlist
