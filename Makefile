@@ -33,6 +33,7 @@ win: LDFLAGS = -static -static-libgcc -static-libstdc++ \
                    -lftxui-component -lftxui-dom -lftxui-screen \
                    -ltag.dll -lmpv.dll \
                    -lcurl.dll \
+				   -lssl -lcrypto -lcrypt32 \
                    -lws2_32 -lwldap32 -lwinmm -lole32 -luuid -lstrmiids
 win: TARGET = $(TARGET_BASE).exe
 win: post_win

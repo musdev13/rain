@@ -33,6 +33,9 @@ std::string getSpotifyToken() {
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+    #ifdef __WIN32
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+    #endif
 
     CURLcode res = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
@@ -64,6 +67,9 @@ bool getTrackInfo(const std::string& trackID, std::string& title, std::string& a
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+    #ifdef __WIN32
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "./ca-bundle.crt");
+    #endif
 
     CURLcode res = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
