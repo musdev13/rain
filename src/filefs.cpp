@@ -91,6 +91,21 @@ std::string readFirstLine(const std::string& filename){
     return line;
 }
 
+std::string readLine(const std::string& filename, size_t lineNumber) {
+    std::ifstream file(filename);
+    std::string line;
+    size_t currentLine = 0;
+
+    if (!file.is_open()) return "";
+
+    while (std::getline(file, line)) {
+        if (currentLine == lineNumber) return line;
+        ++currentLine;
+    }
+
+    return "";
+}
+
 void insertFirstLine(const std::string& path, const std::string& newLine) {
     std::ifstream inFile(path);
     if (!inFile) return;

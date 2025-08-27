@@ -16,6 +16,8 @@ std::vector<std::string> files;
 std::vector<std::string> formatedItems;
 
 std::string SC_clientID;
+std::string SP_clientID;
+std::string SP_clientSecret;
 std::mutex data_mutex;
 
 std::vector<std::string> searchList;

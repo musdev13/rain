@@ -17,6 +17,7 @@ void debug(const std::string str);
 void moveLineUp(const std::string& pathToFolder, int lineNum);
 void moveLineDown(const std::string& pathToFolder, int lineNum);
 std::string readFirstLine(const std::string& filename);
+std::string readLine(const std::string& filename, size_t lineNumber);
 void insertFirstLine(const std::string& path, const std::string& newLine);
 std::vector<std::string> readInf(const std::string& path);
 void writeFile(const std::string& path, const std::string& content);

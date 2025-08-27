@@ -1,6 +1,8 @@
 #include "mus.h/event_loop.hpp"
 #include "mus.h/atomic_vars.hpp"
+#include "mus.h/filefs.hpp"
 
+#include <string>
 #include <thread>
 #include <atomic>
 
@@ -21,7 +23,7 @@ void preload_tracks() {
                 path = fullPaths[i];
             }
 
-            if (path.find("@rain:spotify\\") != std::string::npos) {
+            if (path.find("@rain:spotify\\") != std::string::npos && (SP_clientID != "" && SP_clientSecret != "")) {
                 std::string id = path;
                 removeAll(id, "@rain:spotify\\");
                 std::string mp3_path = cacheFolder + id + ".mp3";
@@ -30,16 +32,14 @@ void preload_tracks() {
                 if (!fs::exists(mp3_path) || !fs::exists(info_path)) {
                     std::string title, artist;
                     getTrackInfo(id, title, artist);
-                    getTrack(id, cacheFolder + id + ".dwnld");
+                    // debug(title+" - "+artist);
+                    getTrack(id, cacheFolder + id, title, artist);
 
-                    if (fs::exists(cacheFolder + id + ".dwnld")) {
-                        fs::rename(cacheFolder + id + ".dwnld", mp3_path);
-                        writeFile(info_path, title + "\n" + artist);
+                    writeFile(info_path, title + "\n" + artist);
 
-                        std::lock_guard<std::mutex> lock(data_mutex);
-                        if (i < list.size()) list[i] = title + " - " + artist;
-                        if (i < fullPaths.size()) fullPaths[i] = mp3_path;
-                    }
+                    std::lock_guard<std::mutex> lock(data_mutex);
+                    if (i < list.size()) list[i] = title + " - " + artist;
+                    if (i < fullPaths.size()) fullPaths[i] = mp3_path;
                 } else {
                     std::lock_guard<std::mutex> lock(data_mutex);
                     if (i < fullPaths.size()) fullPaths[i] = mp3_path;

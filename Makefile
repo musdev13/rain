@@ -13,7 +13,7 @@ RC_OBJ := $(BUILD_DIR)/win/src/resource.o
 .PHONY: linux win clean run install post_win
 
 linux: CXXFLAGS = -std=c++20 -Wall -Wextra -I./src
-linux: LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv -ltag -lcurl
+linux: LDFLAGS = -lftxui-component -lftxui-dom -lftxui-screen -lmpv -ltag -lcurl -lssl -lcrypto
 linux: TARGET = $(TARGET_BASE)
 linux: $(TARGET_BASE)
 
@@ -66,7 +66,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 run: $(TARGET_BASE)
-	$(TARGET_BASE) /home/$(shell whoami)/Music/test
+	$(TARGET_BASE) /home/$(shell whoami)/Music/iknow
 
 install: $(TARGET_BASE)
 	install -Dm755 $(TARGET_BASE) /usr/bin/rain

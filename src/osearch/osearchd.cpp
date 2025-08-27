@@ -6,7 +6,7 @@ void osearchd(const std::string formatedName){
     if (osearchRunning && SC_clientID != "") {
         osearchSoundcloudTrack(formatedName);
     }
-    if(osearchRunning){
+    if(osearchRunning && (SP_clientID != "" && SP_clientSecret != "")){
         osearchSpotifyTrack(formatedName);
     }
     osearchRunning = false;

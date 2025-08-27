@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <curl/curl.h>
-#include <nlohmann/json.hpp>
+#include <sstream>
+#include <cstdio>
+#include <regex>
 #include "writeCallBack.hpp"
-#include "getTokens.hpp"
 
-void getTrack(const std::string &trackID, std::string filePath);
+void getTrack(const std::string& trackID, const std::string& filePath, const std::string& title,const std::string& artist);

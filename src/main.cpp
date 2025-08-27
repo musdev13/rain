@@ -42,6 +42,8 @@ int main(int argc, char* argv[]){
     }
 
     SC_clientID = readFirstLine((configDir/"SCCID").string());
+    SP_clientID = readLine((configDir/"SPCID").string(), 0);
+    SP_clientSecret = readLine((configDir/"SPCID").string(), 1);
     // system(("notify-send \""+SC_clientID+"\"").c_str());
 
     // for (int i=0;i<10;i++) searchList.push_back("Musya");

@@ -3,8 +3,13 @@
 #include <string>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
+#include <regex>
 #include "writeCallBack.hpp"
 #include <iostream>
-#include "getTokens.hpp"
+#include <cstdlib>
+#include <sstream>
+#include <openssl/bio.h>
+#include <openssl/evp.h>
+#include <openssl/buffer.h>
 
-void getTrackInfo(const std::string& trackID, std::string& title, std::string& artist);
+bool getTrackInfo(const std::string& trackID, std::string& title, std::string& artist);

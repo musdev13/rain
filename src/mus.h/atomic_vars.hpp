@@ -20,6 +20,8 @@ extern std::string pathToFolder;
 extern std::vector<std::string> files;
 extern std::vector<std::string> formatedItems;
 extern std::string SC_clientID;
+extern std::string SP_clientID;
+extern std::string SP_clientSecret;
 extern std::mutex data_mutex;
 extern std::vector<std::string> searchList;
 extern std::vector<std::string> rawSearchList;
